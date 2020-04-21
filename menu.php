@@ -65,7 +65,7 @@ $menu = getMenuByResID($id);
     </div>
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 	    <div class="container">
-	      <a class="navbar-brand" href="index.html">Vegefoods</a>
+	      <a class="navbar-brand" href="search.php">Food App</a>
 	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
 	        <span class="oi oi-menu"></span> Menu
 	      </button>
@@ -94,21 +94,64 @@ $menu = getMenuByResID($id);
 	  </nav>
     <!-- END nav -->
 
-    <div class="hero-wrap hero-bread" style="background-image: url('images/bg_1.jpg');">
+    <!-- restaurant info -->
+    <section class="ftco-section" style="padding: 1em 0">
       <div class="container">
-        <div class="row no-gutters slider-text align-items-center justify-content-center">
-          <div class="col-md-9 ftco-animate text-center">
-          	<!-- <p class="breadcrumbs"><span class="mr-2"><h href="index.html">Home</h></span> <span>Products</span></p> -->
-            <h class="mb-0 bread" style="color:black"><?php echo $restaurant["restaurant_name"]?></h>
-            <p> </p>
-            <h1 class="mb-0 bread" style="color:black">Menu</h1>
+        <div class="row">
+          <div class="col-lg-6 product-details pl-md-5 ftco-animate" style="padding-left:1rem !important">
+            <h3><?php echo $restaurant["restaurant_name"]?></h3>
+            <p class="text-left mr-4">
+              <a class="mr-2"><?php echo $restaurant["cuisine"]?></a>
+            </p>
+            <div class="rating d-flex">
+              <p class="text-left mr-4">
+                <a href="#" class="mr-2">5.0</a>
+                <a href="#"><span class="ion-ios-star"></span></a>
+                <a href="#"><span class="ion-ios-star-outline"></span></a>
+                <a href="#"><span class="ion-ios-star-outline"></span></a>
+                <a href="#"><span class="ion-ios-star-outline"></span></a>
+                <a href="#"><span class="ion-ios-star-outline"></span></a>
+              </p>
+              <p class="text-left mr-4">
+                <a class="mr-2" style="color: #000;">1000 <span style="color: #bbb;">Ratings</span></a>
+              </p>
+              <p class="text-left">
+                <a href="#" class="mr-2" style="color: #000;">500 <span style="color: #bbb;"></span></a>
+              </p>
+            </div>
+            <div class="block-23 mb-3">
+	              <ul>
+                  <li><span class="icon icon-phone"></span><span class="text"><?php echo $restaurant["res_phone_number"]?></span></li>
+	                <li><span class="icon icon-map-marker"></span><span class="text"><?php echo $restaurant["restaurant_address"]?></span></li>
+	              </ul>
+	            </div>
+            <p> Open Hours: <?php echo $restaurant["hours"] ?></p>
+
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <section class="ftco-section">
+
+
+
+
+  <!-- Header
+    <div class="container">
+      <div class="row no-gutters slider-text align-items-center justify-content-center">
+        <div class="col-md-9 ftco-animate text-center">
+        	<p class="breadcrumbs"><span class="mr-2"><h href="index.html">Home</h></span> <span>Products</span></p>
+          <h class="mb-0 bread" style="color:black; font-size:30px"><?php echo $restaurant["restaurant_name"]?></h>
+          <p> </p>
+          <h1 class="mb-0 bread" style="color:black; font-size:30px">Menu</h1>
+        </div>
+      </div>
+    </div>
+    -->
+
+    <section class="ftco-section" style="padding: 1em 0">
     	<div class="container">
+        <!--
     		<div class="row justify-content-center">
     			<div class="col-md-10 mb-5 text-center">
     				<ul class="product-category">
@@ -120,6 +163,7 @@ $menu = getMenuByResID($id);
     				</ul>
     			</div>
     		</div>
+      -->
 
 
         <!-- Search bar  -->
@@ -158,7 +202,7 @@ $menu = getMenuByResID($id);
     						<h3><?php echo $food['food_name']; ?></h3>
     						<div class="d-flex">
     							<div class="pricing">
-		    						<p class="price"><span class="price-sale"><?php echo $food['price']; ?></span></p>
+		    						<p class="price"><span class="price-sale">$<?php echo $food['price']; ?></span></p>
 		    					</div>
 	    					</div>
 	    					<div class="bottom-area d-flex px-3">
@@ -230,7 +274,7 @@ $menu = getMenuByResID($id);
         <div class="row mb-5">
           <div class="col-md">
             <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2">Vegefoods</h2>
+              <h2 class="ftco-heading-2">Food App</h2>
               <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia.</p>
               <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
                 <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>

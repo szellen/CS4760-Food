@@ -35,5 +35,15 @@ function getMenuByResID($id) {
 	return $results;
 }
 
+function getAllCuisines() {
+  global $db;
+  $query = "SELECT DISTINCT(cuisine) FROM restaurant_info";
+  $statement = $db->prepare($query);
+  $statement->execute();
+  $results = $statement->fetchAll();
+  $statement->closecursor();
+	return $results;
+}
+
 
 ?>
