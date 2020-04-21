@@ -1,3 +1,27 @@
+
+<?php
+require("connectdb.php");
+require("food_db.php");
+
+$msg = '';
+
+$all_restaurants = getAllRestaurants();
+
+
+
+
+
+?>
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -23,7 +47,7 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="#">Start Bootstrap</a>
+      <a class="navbar-brand" href="#">Food</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -55,17 +79,27 @@
 
       <div class="col-lg-3">
 
-        <h1 class="my-4">Food</h1>
+        <h1 class="my-4">Cuisine</h1>
         <div class="list-group">
-          <a href="#" class="list-group-item">Category 1</a>
-          <a href="#" class="list-group-item">Category 2</a>
-          <a href="#" class="list-group-item">Category 3</a>
+          <a href="#" class="list-group-item">American</a>
+          <a href="#" class="list-group-item">Mexican</a>
+          <a href="#" class="list-group-item">Asian</a>
+          <a href="#" class="list-group-item">Other</a>
         </div>
 
       </div>
       <!-- /.col-lg-3 -->
 
       <div class="col-lg-9">
+
+      <?php foreach ($all_restaurants as $restaurant): ?>
+      <tr>
+        <td>
+          <?php echo $restaurant['cuisine']; ?> 
+        </td>
+      </tr> 
+      <?php endforeach; ?>
+
 
         <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
           <ol class="carousel-indicators">
@@ -75,13 +109,13 @@
           </ol>
           <div class="carousel-inner" role="listbox">
             <div class="carousel-item active">
-              <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="First slide">
+              <img class="d-block img-fluid" src="./src/food1.jpg" alt="First slide">
             </div>
             <div class="carousel-item">
-              <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="Second slide">
+              <img class="d-block img-fluid" src="./src/food2.jpg" alt="Second slide">
             </div>
             <div class="carousel-item">
-              <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="Third slide">
+              <img class="d-block img-fluid" src="./src/food3.jpg" alt="Third slide">
             </div>
           </div>
           <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
