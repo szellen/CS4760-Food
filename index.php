@@ -9,8 +9,6 @@ $all_restaurants = getAllRestaurants();
 
 
 
-
-
 ?>
 
 
@@ -120,16 +118,23 @@ $all_restaurants = getAllRestaurants();
         </div>
 
         <div class="row">
-              <?php foreach ($all_restaurants as $restaurant): ?>
+              <?php foreach ($all_restaurants as $restaurant):
+              $id = $restaurant['restaurantID'];
+              $name = $restaurant['restaurant_name'];
+              ?>
 
                 <div class="col-lg-4 col-md-6 mb-4">
                   <div class="card h-100">
 
-                    <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                    <!-- <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a> -->
 
-                    <div class="card-body">
+                    <div class="card-body" >
                       <h4 class="card-title">
-                        <a href="#"> <?php echo $restaurant['restaurant_name']; ?> </a>
+                      
+                      <?php 
+                      echo "<a href='./menu.php?id={$id}'>$name</a>";
+                      ?>
+                      
                       </h4>
                       <h5><?php echo $restaurant['cuisine']; ?> </h5>
                       <p class="card-text"><?php echo $restaurant['restaurant_address']; ?> </p>
