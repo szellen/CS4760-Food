@@ -1,0 +1,113 @@
+*{margin: 0; padding:0} 
+
+/* Basics */
+html, body {   
+    width: 100%;   
+    height: 100%;
+    font-family: "Helvetica Neue", Helvetica, sans-serif; 
+    background: #fff0b3;
+}
+/*sets the color and width of the area behind the login box*/
+.container {
+  width: 100%;
+  background-color: #fff0b3;
+}
+/*sets the register box size and position*/
+#fm-register {
+    width: 540px;
+    background-color: white;
+    padding-bottom: 30px;
+    margin: auto;
+    margin-top: 50px;
+    border-radius: 5px;
+  }
+
+/*Register word font*/
+h1 {
+    color: rgb(97, 103, 105);	
+    font-size: 36px;
+    line-height: 44px;
+    padding-top: 10px;
+  }
+  
+  /*Username, Password, Email stuff font*/
+  label {
+      color: #555;
+      display: inline-block;
+      margin-left: 55px;
+      padding-top: 10px;
+      font-size: 18px;
+  }
+
+  /*indentation for the error messages so they're in line with the boxes*/
+  #passwordErr, #email-msg, #user-msg, #pwd-msg {
+      margin-left: 55px;
+  }
+
+
+/*What the user will input
+Changes font size to 12 px*/
+input {
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 12px;
+    outline: none;
+}
+/*sets box aesthetics for username and password*/
+input[type=email],
+input[type=text],
+input[type=password] {
+    color: #777;
+    margin: 10px;
+    margin-top: 12px;
+    margin-left: 55px;
+    width: 430px;
+    height: 35px;
+    border-radius: 2px;
+}
+
+/*Sets the Register button aesthetics*/
+input[type=submit] {
+    width: 50%;
+    /* margin-left: 55px; */
+    display: block;
+    margin: auto;
+    margin-top: 30px;
+    height: 35px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 17.5px;
+    color: #fff;
+    background-color: #acd6ef; /*IE fallback*/
+    border: 1px solid #66add6;
+    cursor: pointer;
+}
+
+/*changes to be made when the screen size is smaller*/
+@media only screen and (max-width : 768px){
+    /*change width to a percentage, navbar collapse*/
+    #fm-register {
+      width: 75%;
+      border-collapse: separate;
+    }
+    /*title moves to be more centered so it's not 
+    on the very edges of the smaller box*/
+    h1{
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+    /*move the Words a specific bit to the left */
+    label{
+        margin-left: 47px;
+    }
+    /*Change the input box sizes to a percentage, like the form id,
+    also set margin to auto for it to be centered*/
+    input[type=email], input[type=text], input[type=password] {
+        width: 75%;
+        margin: auto;
+    }
+    /*move the error messages the same amount away as the input boxes*/
+    #passwordErr, #email-msg, #user-msg, #pwd-msg {
+        margin-left: 47px;
+    }
+  }

@@ -1,0 +1,80 @@
+*{margin: 0; padding:0} 
+
+/* Basics */
+html, body {   
+    width: 100%;   
+    height: 100%;
+    font-family: "Helvetica Neue", Helvetica, sans-serif; 
+    background: #fff0b3;
+}
+/*sets the color and width of the area behind the login box*/
+.container {
+  width: 100%;
+  background-color: #fff0b3;
+}
+/*sets the login box size and position*/
+#fm-login {
+  width: 350px;
+  background-color: white;
+  padding-bottom: 30px;
+  margin: auto;
+  margin-top: 50px;
+  border-radius: 5px;
+}
+
+/*Login word font*/
+h1 {
+  color: rgb(97, 103, 105);	
+  font-size: 36px;
+  line-height: 44px;
+  padding-top: 10px;
+}
+
+/*Username and Password font*/
+label {
+    color: #555;
+    display: inline-block;
+    margin-left: 25px;
+    padding-top: 10px;
+    font-size: 18px;
+}
+
+#user-msg, #pwd-msg {
+  margin-left: 25px;
+}
+
+/*What the user will input
+Changes font size to 12 px*/
+input {
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 12px;
+    outline: none;
+}
+/*sets box aesthetics for username and password*/
+input[type=text],
+input[type=password] {
+    color: #777;
+    margin: 10px;
+    margin-top: 12px;
+    margin-left: 25px;
+    width: 300px;
+    height: 35px;
+    border-radius: 2px;
+}
+
+/*Sets the Register and Sign in button aesthetics*/
+input[type=submit] {
+    margin-top: 20px;
+    width: 122px;
+    margin-right: 25px;
+    margin-left: 25px;
+    height: 35px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 17.5px;
+    color: #fff;
+    background-color: #acd6ef; /*IE fallback*/
+    border: 1px solid #66add6;
+    cursor: pointer;
+}
