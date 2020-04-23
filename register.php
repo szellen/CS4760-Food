@@ -3,10 +3,10 @@ require('connectdb.php');
 ?>
 <?php
 if (isset($_GET['btn-submit']))
-{	
-   try 
-   { 	
-      switch ($_GET['btn-submit']) 
+{
+   try
+   {
+      switch ($_GET['btn-submit'])
       {
          case 'Register': checkemail(); break;
       }
@@ -15,7 +15,7 @@ if (isset($_GET['btn-submit']))
    {
       $error_message = $e->getMessage();
       echo "<p>Error message: $error_message </p>";
-   }   
+   }
 }
 ?>
 <?php
