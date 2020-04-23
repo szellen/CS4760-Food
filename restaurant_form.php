@@ -1,7 +1,31 @@
+<?php
+require("connectdb.php");
+require("food_db.php");
+
+$msg = '';
+
+if (!empty($_POST['db-btn'])) {
+  if ($_POST['db-btn'] == "Submit Restaurant Info") {
+    if (!empty($_POST["res_name"]) && !empty($_POST["address"]) && !empty($_POST["phone"]) && !empty($_POST["cuisine"]) && !empty($_POST["hours"]) ){
+      insert_restaurant($_POST["res_name"], $_POST["address"], $_POST["phone"], $_POST["cuisine"], $_POST["hours"]);
+    } else {
+      $msg = "Info not complete!";
+    }
+  }
+}
+
+
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
+
+
   <head>
-    <title>Vegefoods - Free Bootstrap 4 Template by Colorlib</title>
+    <title>Food App Restaurant Form</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -52,7 +76,7 @@
     </div>
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 	    <div class="container">
-	      <a class="navbar-brand" href="index.html">Vegefoods</a>
+	      <a class="navbar-brand" href="search.php">Food App</a></a>
 	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
 	        <span class="oi oi-menu"></span> Menu
 	      </button>
@@ -81,66 +105,34 @@
 	  </nav>
     <!-- END nav -->
 
-    <div class="hero-wrap hero-bread" style="background-image: url('images/bg_1.jpg');">
-      <div class="container">
-        <div class="row no-gutters slider-text align-items-center justify-content-center">
-          <div class="col-md-9 ftco-animate text-center">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Contact us</span></p>
-            <h1 class="mb-0 bread">Contact us</h1>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <section class="ftco-section contact-section bg-light">
       <div class="container">
-      	<div class="row d-flex mb-5 contact-info">
-          <div class="w-100"></div>
-          <div class="col-md-3 d-flex">
-          	<div class="info bg-white p-4">
-	            <p><span>Address:</span> 198 West 21th Street, Suite 721 New York NY 10016</p>
-	          </div>
-          </div>
-          <div class="col-md-3 d-flex">
-          	<div class="info bg-white p-4">
-	            <p><span>Phone:</span> <a href="tel://1234567920">+ 1235 2355 98</a></p>
-	          </div>
-          </div>
-          <div class="col-md-3 d-flex">
-          	<div class="info bg-white p-4">
-	            <p><span>Email:</span> <a href="mailto:info@yoursite.com">info@yoursite.com</a></p>
-	          </div>
-          </div>
-          <div class="col-md-3 d-flex">
-          	<div class="info bg-white p-4">
-	            <p><span>Website</span> <a href="#">yoursite.com</a></p>
-	          </div>
-          </div>
-        </div>
         <div class="row block-9">
           <div class="col-md-6 order-md-last d-flex">
-            <form action="#" class="bg-white p-5 contact-form">
+
+            <form action="restaurant_form.php" method="post" class="bg-white p-5 contact-form">
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="Your Name">
+                <input type="text" class="form-control" placeholder="Restaurant Name" id="res_name" name="res_name">
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="Your Email">
+                <textarea name="address" id="address" cols="30" rows="4" class="form-control" placeholder="Address"></textarea>
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="Subject">
+                <input type="text" class="form-control" placeholder="Phone Number" id="phone" name="phone">
               </div>
               <div class="form-group">
-                <textarea name="" id="" cols="30" rows="7" class="form-control" placeholder="Message"></textarea>
+                <input type="text" class="form-control" placeholder="Cusine" id="cuisine" name="cuisine">
               </div>
               <div class="form-group">
-                <input type="submit" value="Send Message" class="btn btn-primary py-3 px-5">
+                <input type="text" class="form-control" placeholder="Hours" id="hours" name="hours">
               </div>
+              <div class="form-group">
+                <input type="submit" value="Submit Restaurant Info" name = "db-btn"class="btn btn-primary py-3 px-5">
+              </div>
+              <small class="text-danger"><?php echo $msg ?></small>
             </form>
 
-          </div>
-
-          <div class="col-md-6 d-flex">
-          	<div id="map" class="bg-white"></div>
           </div>
         </div>
       </div>
