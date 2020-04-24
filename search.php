@@ -1,12 +1,12 @@
 <?php
 require("connectdb.php");
 require("food_db.php");
-
+session_start();
 $msg = '';
 
 $all_restaurants = getAllRestaurants();
 $all_cuisines = getAllCuisines();
-
+echo $_SESSION['user']
 ?>
 
 
@@ -16,7 +16,7 @@ $all_cuisines = getAllCuisines();
 
 <!DOCTYPE html>
 <html lang="en">
- 
+
   <body class="goto-here">
 
   <?php include "./src/header.html" ?>
@@ -172,22 +172,6 @@ $all_cuisines = getAllCuisines();
         </style>
 
 
-
-    <div class="row">
-      <div class="col-lg-6 product-details pl-md-5 ftco-animate">
-            <div class="form-group d-flex">
-              <div class="select-wrap">
-                <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                <select name="" id="" class="form-control">
-                  <option value="">Small</option>
-                  <option value="">Medium</option>
-                  <option value="">Large</option>
-                  <option value="">Extra Large</option>
-                </select>
-              </div>
-            </div>
-        </div>
-    </div>
 
 
 
