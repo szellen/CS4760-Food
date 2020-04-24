@@ -52,6 +52,7 @@ function insert_restaurant($res_name, $address, $phone, $cuisine, $hours) {
   $statement = $db->prepare($query);
   $statement->bindValue (':restaurant_address', $address);
   $statement->execute();
+  $statement->closecursor();
 
   $query = "INSERT INTO restaurant_info(restaurant_address, cuisine, hours, average_rating, res_phone_number)
             VALUES (:restaurant_address, :cuisine, :hours, 0, :res_phone_number)";
@@ -61,6 +62,7 @@ function insert_restaurant($res_name, $address, $phone, $cuisine, $hours) {
   $statement->bindValue (':hours', $hours);
   $statement->bindValue (':res_phone_number', $phone);
   $statement->execute();
+  $statement->closecursor();
 
   $query = "INSERT INTO restaurant_contact(restaurant_name, res_phone_number)
             VALUES (:restaurant_name, :res_phone_number)";
@@ -68,7 +70,69 @@ function insert_restaurant($res_name, $address, $phone, $cuisine, $hours) {
   $statement->bindValue (':restaurant_name', $res_name);
   $statement->bindValue (':res_phone_number', $phone);
   $statement->execute();
+  $statement->closecursor();
 }
+
+function getUserIDbyUsername($username) {
+  global $db;
+  $query = "SELECT UserID FROM users WHERE username = :username";
+  $statement = $db->prepare($query);
+  $statement->bindValue (':username', $username);
+  $statement->execute();
+  $result = $statement->fetch();
+  $statement->closecursor();
+	return $result;
+}
+
+function addFoodToCart($food_name, $price, $userID, $id, $foodItemID) {
+  global $db;
+  $query = "INSERT INTO food_temp(userID, itemID, food_name, price, restaurantID)
+            VALUES (:userID, :itemID, :food_name, :price, :restaurantID)";
+  $statement = $db->prepare($query);
+  $userID = (int)$userID;
+  $id = (int)$id;
+  $foodItemID = (int)$foodItemID;
+  $price = (float)$price;
+  $statement->bindValue (':userID', $userID);
+  $statement->bindValue (':itemID', $foodItemID);
+  $statement->bindValue (':food_name', $food_name);
+  $statement->bindValue (':price', $price);
+  $statement->bindValue (':restaurantID', $id);
+  $statement->execute();
+  $statement->closecursor();
+}
+
+function removeFoodFromCart($userID, $res_id, $foodItemID) {
+  global $db;
+  $query = "DELETE FROM food_temp
+            WHERE (userID = :userID AND itemID = :itemID AND restaurantID = :restaurantID)
+            ORDER BY userID
+            LIMIT 1";
+    $statement = $db->prepare($query);
+    $userID = (int)$userID;
+    $res_id = (int)$res_id;
+    $foodItemID = (int)$foodItemID;
+    $statement->bindValue (':userID', $userID);
+    $statement->bindValue (':restaurantID', $res_id);
+    $statement->bindValue (':itemID', $foodItemID);
+    $statement->execute();
+    $statement->closecursor();
+}
+
+
+function getCart($userID, $res_id) {
+  global $db;
+  $query = "SELECT * FROM food_temp
+            WHERE userID = :userID AND restaurantID = :res_id";
+  $statement = $db->prepare($query);
+  $statement->bindValue (':userID', $userID);
+  $statement->bindValue (':res_id', $res_id);
+  $statement->execute();
+  $results = $statement->fetchAll();
+  $statement->closecursor();
+	return $results;
+}
+
 
 
 
