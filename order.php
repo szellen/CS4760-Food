@@ -49,18 +49,18 @@ $menu = getAllFood($restaurantID);
     <link rel="stylesheet" href="menu_template/css/style.css">
   </head>
   <body class="goto-here">
-		<div class="py-1 bg-primary">
+		<!-- <div class="py-1 bg-primary">
     	<div class="container">
     		<div class="row no-gutters d-flex align-items-start align-items-center px-md-0">
 	    		<div class="col-lg-12 d-block">
 		    		<div class="row d-flex">
 		    			<div class="col-md pr-4 d-flex topper align-items-center">
 					    	<div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-phone2"></span></div>
-						    <span class="text">+ 1235 2355 98</span>
+						    <span class="text">+18045483722</span>
 					    </div>
 					    <div class="col-md pr-4 d-flex topper align-items-center">
 					    	<div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-paper-plane"></span></div>
-						    <span class="text">youremail@email.com</span>
+						    <span class="text">pm4by@virginia.edu</span>
 					    </div>
 					    <div class="col-md-5 pr-4 d-flex topper align-items-center text-lg-right">
 						    <span class="text">3-5 Business days delivery &amp; Free Returns</span>
@@ -69,10 +69,10 @@ $menu = getAllFood($restaurantID);
 			    </div>
 		    </div>
 		  </div>
-    </div>
+    </div> -->
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 	    <div class="container">
-	      <a class="navbar-brand" href="index.html">Food App</a>
+	      <a class="navbar-brand" href="index.html">Strictly Charlottesville</a>
 	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
 	        <span class="oi oi-menu"></span> Menu
 	      </button>
@@ -101,7 +101,7 @@ $menu = getAllFood($restaurantID);
 	  </nav>
     <!-- END nav -->
 
-    <div class="hero-wrap hero-bread" style="background-image: url('menu_template/images/bg_1.jpg');">
+    <!-- <div class="hero-wrap hero-bread" style="background-image: url('menu_template/images/bg_1.jpg');">
       <div class="container">
         <div class="row no-gutters slider-text align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate text-center">
@@ -110,7 +110,7 @@ $menu = getAllFood($restaurantID);
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <section class="ftco-section ftco-cart">
 			<div class="container">
@@ -146,12 +146,13 @@ $menu = getAllFood($restaurantID);
 					          	</div>
 					          </td>
 
+
+
+						        <td class="total"><?php echo $item['price']; ?></td>
+						      </tr><!-- END TR-->
                   <? endforeach; ?>
 
-						        <td class="total">$4.90</td>
-						      </tr><!-- END TR-->
-
-						      <tr class="text-center">
+						      <!-- <tr class="text-center">
 						        <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
 
 						        <td class="product-name">
@@ -168,7 +169,7 @@ $menu = getAllFood($restaurantID);
 					          </td>
 
 						        <td class="total">$15.70</td>
-						      </tr><!-- END TR-->
+						      </tr><!-- END TR--> -->
 						    </tbody>
 						  </table>
 					  </div>
