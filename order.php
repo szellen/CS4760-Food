@@ -1,3 +1,23 @@
+<?php
+
+require("connectdb.php");
+
+$restaurantID = 1;
+
+function getAllFood($restaurantID) {
+  global $db;
+  $query = "SELECT * FROM food";
+  $statement = $db->prepare($query);
+  $statement->execute();
+  $result = $statement->fetchAll();
+  $statement->closecursor();
+  return $result;
+}
+
+$menu = getAllFood($restaurantID);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -81,7 +101,7 @@
 	  </nav>
     <!-- END nav -->
 
-    <div class="hero-wrap hero-bread" style="background-image: url('images/bg_1.jpg');">
+    <div class="hero-wrap hero-bread" style="background-image: url('menu_template/images/bg_1.jpg');">
       <div class="container">
         <div class="row no-gutters slider-text align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate text-center">
@@ -109,21 +129,24 @@
 						      </tr>
 						    </thead>
 						    <tbody>
+                  <?php foreach ($menu as $item): ?>
 						      <tr class="text-center">
 						        <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
 
 						        <td class="product-name">
-						        	<h3>Bell Pepper</h3>
-						        	<p>Far far away, behind the word mountains, far from the countries</p>
+						        	<h3><?php echo $item['food_name']; ?></h3>
+						        	<p><?php echo "restaurauntID: " . $item['restaurantID']; ?> </p>
 						        </td>
 
-						        <td class="price">$4.90</td>
+						        <td class="price"><?php echo $item['price']; ?></td>
 
 						        <td class="quantity">
 						        	<div class="input-group mb-3">
 					             	<input type="text" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
 					          	</div>
 					          </td>
+
+                  <? endforeach; ?>
 
 						        <td class="total">$4.90</td>
 						      </tr><!-- END TR-->
@@ -292,7 +315,7 @@
   <script src="menu_template/js/scrollax.min.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
   <script src="menu_template/js/google-map.js"></script>
-  <script src="menu_template/gitjs/main.js"></script>
+  <script src="menu_template/js/main.js"></script>
 
   <script>
 		$(document).ready(function(){
