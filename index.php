@@ -67,7 +67,7 @@ $all_restaurants = getAllRestaurants();
             <div class="features-icons-icon d-flex">
               <i class="icon-layers m-auto text-primary"></i>
             </div>
-            <h3>Fully Responsive</h3>
+            <h3>View Restaurant</h3>
             <p class="lead mb-0">This theme will look great on any device, no matter the size!</p>
           </div>
         </div>
@@ -76,7 +76,7 @@ $all_restaurants = getAllRestaurants();
             <div class="features-icons-icon d-flex">
               <i class="icon-layers m-auto text-primary"></i>
             </div>
-            <h3>Bootstrap 4 Ready</h3>
+            <h3>Sign in/Sign up</h3>
             <p class="lead mb-0">Featuring the latest build of the new Bootstrap 4 framework!</p>
           </div>
         </div>
@@ -85,14 +85,14 @@ $all_restaurants = getAllRestaurants();
             <div class="features-icons-icon d-flex">
               <i class="icon-check m-auto text-primary"></i>
             </div>
-            <h3>Easy to Use</h3>
+            <h3>View Order</h3>
             <p class="lead mb-0">Ready to use with your own content, or customize the source files!</p>
           </div>
         </div>
       </div>
       
     
-
+      <h3>Top restaurants</h3>
         <div class="row">
               <?php foreach ($all_restaurants as $restaurant):
               $id = $restaurant['restaurantID'];
