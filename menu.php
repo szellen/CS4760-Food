@@ -40,7 +40,7 @@ if (!empty($_POST["remove"])) {
     $shoppingCart = getCart($userID, $id);
   }
 }
-session_destroy();
+
 
 ?>
 
