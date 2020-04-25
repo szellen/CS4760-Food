@@ -2,6 +2,10 @@
 
 require("connectdb.php");
 
+session_start();
+
+$user = "piamutia";
+
 $restaurantID = 1;
 
 function getAllFood($restaurantID) {
@@ -15,6 +19,19 @@ function getAllFood($restaurantID) {
 }
 
 $menu = getAllFood($restaurantID);
+
+function getUserInfo($user) {
+  global $db;
+  $query = "SELECT * FROM user NATURAL JOIN users NATURAL JOIN user_phone_number WHERE username = :user";
+  $statement = $db->prepare($query);
+  $statement->bindValue(':user', $user);
+  $statement->execute();
+  $result = $statement->fetch();
+  $statement->closecursor();
+  return $result;
+}
+
+$userInfo = getUserInfo($_SESSION['user']);
 
 ?>
 
@@ -31,22 +48,17 @@ $menu = getAllFood($restaurantID);
 
     <link rel="stylesheet" href="menu_template/css/open-iconic-bootstrap.min.css">
     <link rel="stylesheet" href="menu_template/css/animate.css">
-
     <link rel="stylesheet" href="menu_template/css/owl.carousel.min.css">
     <link rel="stylesheet" href="menu_template/css/owl.theme.default.min.css">
     <link rel="stylesheet" href="menu_template/css/magnific-popup.css">
-
     <link rel="stylesheet" href="menu_template/css/aos.css">
-
     <link rel="stylesheet" href="menu_template/css/ionicons.min.css">
-
     <link rel="stylesheet" href="menu_template/css/bootstrap-datepicker.css">
     <link rel="stylesheet" href="menu_template/css/jquery.timepicker.css">
-
-
     <link rel="stylesheet" href="menu_template/css/flaticon.css">
     <link rel="stylesheet" href="menu_template/css/icomoon.css">
     <link rel="stylesheet" href="menu_template/css/style.css">
+
   </head>
   <body class="goto-here">
 		<!-- <div class="py-1 bg-primary">
@@ -79,20 +91,20 @@ $menu = getAllFood($restaurantID);
 
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">
-	          <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+	          <li class="nav-item"><a href="index.html" class="nav-link">View Restaurants</a></li>
 	          <li class="nav-item active dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shop</a>
               <div class="dropdown-menu" aria-labelledby="dropdown04">
-              	<a class="dropdown-item" href="shop.html">Shop</a>
+              	<!-- <a class="dropdown-item" href="shop.html">Menu</a>
               	<a class="dropdown-item" href="wishlist.html">Wishlist</a>
-                <a class="dropdown-item" href="product-single.html">Single Product</a>
+                <a class="dropdown-item" href="product-single.html">Single Product</a> -->
                 <a class="dropdown-item" href="cart.html">Cart</a>
                 <a class="dropdown-item" href="checkout.html">Checkout</a>
               </div>
             </li>
-	          <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+	          <!-- <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
 	          <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
-	          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+	          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li> -->
 	          <li class="nav-item cta cta-colored"><a href="cart.html" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
 
 	        </ul>
@@ -126,9 +138,12 @@ $menu = getAllFood($restaurantID);
 						        <th>Price</th>
 						        <th>Quantity</th>
 						        <th>Total</th>
+
 						      </tr>
 						    </thead>
 						    <tbody>
+
+                <form>
                   <?php foreach ($menu as $item): ?>
 						      <tr class="text-center">
 						        <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
@@ -146,11 +161,10 @@ $menu = getAllFood($restaurantID);
 					          	</div>
 					          </td>
 
-
-
 						        <td class="total"><?php echo $item['price']; ?></td>
 						      </tr><!-- END TR-->
                   <? endforeach; ?>
+                </form>
 
 						      <!-- <tr class="text-center">
 						        <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
@@ -169,7 +183,7 @@ $menu = getAllFood($restaurantID);
 					          </td>
 
 						        <td class="total">$15.70</td>
-						      </tr><!-- END TR--> -->
+						      </tr> END TR-->
 						    </tbody>
 						  </table>
 					  </div>
@@ -199,6 +213,157 @@ $menu = getAllFood($restaurantID);
     				</div>
     				<p><a href="checkout.html" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>
     			</div>
+
+          <!-- BILLING DETAILS -->
+
+          <section class="ftco-section">
+            <div class="container">
+              <div class="row justify-content-center">
+                <div class="col-xl-7 ftco-animate">
+
+                  <form action="#" class="billing-form">
+      							<h3 class="mb-4 billing-heading">Billing Details</h3>
+      	          	<div class="row align-items-end">
+      	          		<div class="col-md-6">
+      	                <div class="form-group">
+      	                	<label for="firstname">First Name</label>
+      	                  <input type="text" class="form-control" placeholder="" value="<?php echo $userInfo[2]; ?>">
+      	                </div>
+      	              </div>
+      	              <div class="col-md-6">
+      	                <div class="form-group">
+      	                	<label for="lastname">Last Name</label>
+      	                  <input type="text" class="form-control" placeholder="" value="<?php echo $userInfo[3]; ?>">
+      	                </div>
+                      </div>
+                      <div class="w-100"></div>
+      		            <div class="col-md-12">
+      		            	<div class="form-group">
+      		            		<label for="country">State / Country</label>
+      		            		<div class="select-wrap">
+      		                  <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+      		                  <select name="" id="" class="form-control">
+      		                  	<option value="">Virginia</option>
+      		                  </select>
+      		                </div>
+      		            	</div>
+      		            </div>
+      		            <div class="w-100"></div>
+      		            <div class="col-md-6">
+      		            	<div class="form-group">
+      	                	<label for="streetaddress">Street Address</label>
+      	                  <input type="text" class="form-control" placeholder="" value="<?php echo $userInfo[1]; ?>">
+      	                </div>
+      		            </div>
+      		            <div class="col-md-6">
+      		            	<div class="form-group">
+      	                  <input type="text" class="form-control" placeholder="Appartment, suite, unit etc: (optional)">
+      	                </div>
+      		            </div>
+      		            <div class="w-100"></div>
+      		            <div class="col-md-6">
+      		            	<div class="form-group">
+      	                	<label for="towncity">Town / City</label>
+      	                  <input type="text" class="form-control" placeholder="Charlottesville" value="Charlottesville">
+      	                </div>
+      		            </div>
+      		            <div class="col-md-6">
+      		            	<div class="form-group">
+      		            		<label for="postcodezip">Postcode / ZIP *</label>
+      	                  <input type="text" class="form-control" placeholder="22904" value="22904">
+      	                </div>
+      		            </div>
+      		            <div class="w-100"></div>
+      		            <div class="col-md-6">
+      	                <div class="form-group">
+      	                	<label for="phone">Phone</label>
+      	                  <input type="text" class="form-control" placeholder="" value="<?php echo $userInfo[7]; ?>">
+      	                </div>
+      	              </div>
+      	              <div class="col-md-6">
+      	                <div class="form-group">
+      	                	<label for="emailaddress">Email Address</label>
+      	                  <input type="text" class="form-control" placeholder="" value="<?php echo $userInfo[6]; ?>">
+      	                </div>
+                      </div>
+                      <div class="w-100"></div>
+                      <div class="col-md-12">
+                      	<div class="form-group mt-4">
+      										<div class="radio">
+      										  <label class="mr-3"><input type="radio" name="optradio"> Create an Account? </label>
+      										  <label><input type="radio" name="optradio"> Ship to different address</label>
+      										</div>
+      									</div>
+                      </div>
+      	            </div>
+      	          </form><!-- END -->
+
+      					</div>
+      					<div class="col-xl-5">
+      	          <div class="row mt-5 pt-3">
+      	          	<div class="col-md-12 d-flex mb-5">
+      	          		<div class="cart-detail cart-total p-3 p-md-4">
+      	          			<h3 class="billing-heading mb-4">Cart Total</h3>
+      	          			<p class="d-flex">
+      		    						<span>Subtotal</span>
+      		    						<span>$20.60</span>
+      		    					</p>
+      		    					<p class="d-flex">
+      		    						<span>Delivery</span>
+      		    						<span>$0.00</span>
+      		    					</p>
+      		    					<p class="d-flex">
+      		    						<span>Discount</span>
+      		    						<span>$3.00</span>
+      		    					</p>
+      		    					<hr>
+      		    					<p class="d-flex total-price">
+      		    						<span>Total</span>
+      		    						<span>$17.60</span>
+      		    					</p>
+      								</div>
+      	          	</div>
+      	          	<div class="col-md-12">
+      	          		<div class="cart-detail p-3 p-md-4">
+      	          			<h3 class="billing-heading mb-4">Payment Method</h3>
+      									<div class="form-group">
+      										<div class="col-md-12">
+      											<div class="radio">
+      											   <label><input type="radio" name="optradio" class="mr-2"> Direct Bank Tranfer</label>
+      											</div>
+      										</div>
+      									</div>
+      									<div class="form-group">
+      										<div class="col-md-12">
+      											<div class="radio">
+      											   <label><input type="radio" name="optradio" class="mr-2"> Check Payment</label>
+      											</div>
+      										</div>
+      									</div>
+      									<div class="form-group">
+      										<div class="col-md-12">
+      											<div class="radio">
+      											   <label><input type="radio" name="optradio" class="mr-2"> Paypal</label>
+      											</div>
+      										</div>
+      									</div>
+      									<div class="form-group">
+      										<div class="col-md-12">
+      											<div class="checkbox">
+      											   <label><input type="checkbox" value="" class="mr-2"> I have read and accept the terms and conditions</label>
+      											</div>
+      										</div>
+      									</div>
+      									<p><a href="#"class="btn btn-primary py-3 px-4">Place an order</a></p>
+      								</div>
+      	          	</div>
+      	          </div>
+                </div> <!-- .col-md-8 -->
+              </div>
+            </div>
+          </section> <!-- .section -->
+
+
     		</div>
 			</div>
 		</section>
