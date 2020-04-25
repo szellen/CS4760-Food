@@ -491,8 +491,8 @@ $userInfo = getUserInfo($_SESSION['user']);
         <div class="row mb-5">
           <div class="col-md">
             <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2">Food App</h2>
-              <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia.</p>
+              <h2 class="ftco-heading-2">Strictly Charlottesville</h2>
+              <p>Based in Charlottesville, Virginia.</p>
               <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
                 <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
                 <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
@@ -504,14 +504,14 @@ $userInfo = getUserInfo($_SESSION['user']);
             <div class="ftco-footer-widget mb-4 ml-md-5">
               <h2 class="ftco-heading-2">Menu</h2>
               <ul class="list-unstyled">
-                <li><a href="#" class="py-2 d-block">Shop</a></li>
-                <li><a href="#" class="py-2 d-block">About</a></li>
-                <li><a href="#" class="py-2 d-block">Journal</a></li>
-                <li><a href="#" class="py-2 d-block">Contact Us</a></li>
+                <li><a href="#" class="py-2 d-block">View Restaurants</a></li>
+                <li><a href="#" class="py-2 d-block">Cart</a></li>
+                <li><a href="#" class="py-2 d-block">My Account</a></li>
+                <!-- <li><a href="#" class="py-2 d-block">Contact Us</a></li> -->
               </ul>
             </div>
           </div>
-          <div class="col-md-4">
+          <!-- <div class="col-md-4">
              <div class="ftco-footer-widget mb-4">
               <h2 class="ftco-heading-2">Help</h2>
               <div class="d-flex">
@@ -527,7 +527,7 @@ $userInfo = getUserInfo($_SESSION['user']);
 	              </ul>
 	            </div>
             </div>
-          </div>
+          </div> -->
           <div class="col-md">
             <div class="ftco-footer-widget mb-4">
             	<h2 class="ftco-heading-2">Have a Questions?</h2>
@@ -548,6 +548,7 @@ $userInfo = getUserInfo($_SESSION['user']);
 						  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
 						  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 						</p>
+            
           </div>
         </div>
       </div>
