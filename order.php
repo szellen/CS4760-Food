@@ -4,7 +4,7 @@ require("connectdb.php");
 
 session_start();
 
-$user = "piamutia";
+$user = $_SESSION['user'];
 
 $restaurantID = 1;
 
@@ -58,6 +58,22 @@ $userInfo = getUserInfo($_SESSION['user']);
     <link rel="stylesheet" href="menu_template/css/flaticon.css">
     <link rel="stylesheet" href="menu_template/css/icomoon.css">
     <link rel="stylesheet" href="menu_template/css/style.css">
+    <link rel="stylesheet" href="order.css">
+
+    <script>
+      function shipDifferentAddress() {
+        if(document.getElementById('ShipDifferent').checked) {
+          document.getElementById('YesShipDifferent').style.visibility = 'visible';
+          document.getElementById('YesShipDifferent').style.opacity = 1;
+          document.getElementById('YesShipDifferent').style.maxHeight= '100%';
+        }
+        else {
+          document.getElementById('YesShipDifferent').style.visibility = 'hidden';
+          document.getElementById('YesShipDifferent').style.opacity = 0;
+          document.getElementById('YesShipDifferent').style.maxHeight= 0;
+        }
+      }
+    </script>
 
   </head>
   <body class="goto-here">
@@ -190,7 +206,7 @@ $userInfo = getUserInfo($_SESSION['user']);
     			</div>
     		</div>
 
-    			<div class="col-lg-4 mt-5 cart-wrap ftco-animate">
+    			<!-- <div class="col-lg-4 mt-5 cart-wrap ftco-animate">
     				<div class="cart-total mb-3">
     					<h3>Cart Totals</h3>
     					<p class="d-flex">
@@ -212,7 +228,7 @@ $userInfo = getUserInfo($_SESSION['user']);
     					</p>
     				</div>
     				<p><a href="checkout.html" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>
-    			</div>
+    			</div> -->
 
           <!-- BILLING DETAILS -->
 
@@ -290,13 +306,90 @@ $userInfo = getUserInfo($_SESSION['user']);
                       <div class="col-md-12">
                       	<div class="form-group mt-4">
       										<div class="radio">
-      										  <label class="mr-3"><input type="radio" name="optradio"> Create an Account? </label>
-      										  <label><input type="radio" name="optradio"> Ship to different address</label>
+      										  <label class="mr-3"><input type="radio" name="optradio" id="CreateAccount" onclick="javascript:shipDifferentAddress()"> Create an Account? </label>
+      										  <label><input type="radio" name="optradio" id="ShipDifferent" onclick="javascript:shipDifferentAddress()">Change Delivery Address</label>
+
       										</div>
       									</div>
                       </div>
       	            </div>
       	          </form><!-- END -->
+
+                  <!-- SHIP TO DIFFERENT ADDRESS -->
+
+                  <div id="YesShipDifferent" style="visibility: visible; opacity: 0; max-height: 0; ">
+                  <form action="#" class="billing-form">
+      							<h3 class="mb-4 billing-heading">Change Delivery Address</h3>
+      	          	<div class="row align-items-end">
+      	          		<div class="col-md-6">
+      	                <div class="form-group">
+      	                	<label for="firstname">First Name</label>
+      	                  <input type="text" class="form-control" placeholder="<?php echo $userInfo[2]; ?>">
+      	                </div>
+      	              </div>
+      	              <div class="col-md-6">
+      	                <div class="form-group">
+      	                	<label for="lastname">Last Name</label>
+      	                  <input type="text" class="form-control" placeholder="<?php echo $userInfo[3]; ?>">
+      	                </div>
+                      </div>
+                      <div class="w-100"></div>
+      		            <div class="col-md-12">
+      		            	<div class="form-group">
+      		            		<label for="country">State / Country</label>
+      		            		<div class="select-wrap">
+      		                  <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+      		                  <select name="" id="" class="form-control">
+      		                  	<option value="">Virginia</option>
+      		                  </select>
+      		                </div>
+      		            	</div>
+      		            </div>
+      		            <div class="w-100"></div>
+      		            <div class="col-md-6">
+      		            	<div class="form-group">
+      	                	<label for="streetaddress">Street Address</label>
+      	                  <input type="text" class="form-control" placeholder="<?php echo $userInfo[1]; ?>">
+      	                </div>
+      		            </div>
+      		            <div class="col-md-6">
+      		            	<div class="form-group">
+      	                  <input type="text" class="form-control" placeholder="Appartment, suite, unit etc: (optional)">
+      	                </div>
+      		            </div>
+      		            <div class="w-100"></div>
+      		            <div class="col-md-6">
+      		            	<div class="form-group">
+      	                	<label for="towncity">Town / City</label>
+      	                  <input type="text" class="form-control" placeholder="Charlottesville">
+      	                </div>
+      		            </div>
+      		            <div class="col-md-6">
+      		            	<div class="form-group">
+      		            		<label for="postcodezip">Postcode / ZIP *</label>
+      	                  <input type="text" class="form-control" placeholder="22904">
+      	                </div>
+      		            </div>
+      		            <div class="w-100"></div>
+      		            <div class="col-md-6">
+      	                <div class="form-group">
+      	                	<label for="phone">Phone</label>
+      	                  <input type="text" class="form-control" placeholder="<?php echo $userInfo[7]; ?>">
+      	                </div>
+      	              </div>
+      	              <div class="col-md-6">
+      	                <div class="form-group">
+      	                	<label for="emailaddress">Email Address</label>
+      	                  <input type="text" class="form-control" placeholder="" value="<?php echo $userInfo[6]; ?>">
+      	                </div>
+                      </div>
+                      <div class="w-100"></div>
+
+      	            </div>
+      	          </form><!-- END -->
+                </div>
+
+
 
       					</div>
       					<div class="col-xl-5">
@@ -340,13 +433,13 @@ $userInfo = getUserInfo($_SESSION['user']);
       											</div>
       										</div>
       									</div>
-      									<div class="form-group">
+      									<!-- <div class="form-group">
       										<div class="col-md-12">
       											<div class="radio">
       											   <label><input type="radio" name="optradio" class="mr-2"> Paypal</label>
       											</div>
       										</div>
-      									</div>
+      									</div> -->
       									<div class="form-group">
       										<div class="col-md-12">
       											<div class="checkbox">
@@ -368,7 +461,7 @@ $userInfo = getUserInfo($_SESSION['user']);
 			</div>
 		</section>
 
-		<section class="ftco-section ftco-no-pt ftco-no-pb py-5 bg-light">
+		<!-- <section class="ftco-section ftco-no-pt ftco-no-pb py-5 bg-light">
       <div class="container py-4">
         <div class="row d-flex justify-content-center py-5">
           <div class="col-md-6">
@@ -385,7 +478,7 @@ $userInfo = getUserInfo($_SESSION['user']);
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
     <footer class="ftco-footer ftco-section">
       <div class="container">
       	<div class="row">
