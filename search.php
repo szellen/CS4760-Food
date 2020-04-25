@@ -6,13 +6,9 @@ $msg = '';
 
 $all_restaurants = getAllRestaurants();
 $all_cuisines = getAllCuisines();
-echo $_SESSION['user']
+//echo $_SESSION['user'];
+
 ?>
-
-
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
