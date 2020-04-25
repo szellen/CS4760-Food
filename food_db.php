@@ -133,7 +133,43 @@ function getCart($userID, $res_id) {
 	return $results;
 }
 
+function getRankRestaurants() {
+  // Return top 6 restaurants, ordered by average rating
+  global $db;
+  $query = "SELECT * FROM restaurant_info NATURAL JOIN restaurant_address
+    NATURAL JOIN restaurant_contact
+    ORDER BY average_rating DESC
+    limit 6";
+  $statement = $db->prepare($query);
+  $statement->execute();
+  $results = $statement->fetchAll();
+  $statement->closeCursor();
+  return $results;
+}
 
 
+function getOrders($username) {
+  global $db;
+  $query = "SELECT * FROM places natural join users 
+            WHERE username = :username ";
+  $statement = $db->prepare($query);
+  $statement->bindValue (':username', $username);
+  $statement->execute();
+  $results = $statement->fetchAll();
+  $statement->closeCursor();
+  return $results;
+}
 
+
+function getOrdersDetails($order_number) {
+  global $db;
+  $query = "SELECT * FROM food_order 
+            WHERE order_number = :order_number ";
+  $statement = $db->prepare($query);
+  $statement->bindValue (':order_number', $order_number);
+  $statement->execute();
+  $results = $statement->fetchAll();
+  $statement->closeCursor();
+  return $results;
+}
 ?>

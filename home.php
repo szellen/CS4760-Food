@@ -5,7 +5,7 @@ require("food_db.php");
 
 $msg = '';
 
-$all_restaurants = getAllRestaurants();
+$rank_restaurants = getRankRestaurants();
 
 
 
@@ -61,40 +61,42 @@ $all_restaurants = getAllRestaurants();
         </div>
 
 
-      <div class="row">
+      <div class="row" style = "padding-top:20px">
+
         <div class="col-lg-4">
           <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
             <div class="features-icons-icon d-flex">
-              <i class="icon-layers m-auto text-primary"></i>
+              <i class="icon-check m-auto text-primary"></i>
             </div>
-            <h3>View Restaurant</h3>
-            <p class="lead mb-0">This theme will look great on any device, no matter the size!</p>
-          </div>
+            <h3><a href="./login.php">Sign in/Sign up</a></h3>
+            <p class="lead mb-0">Sign in your account to start enjoy Strictly Charlottesville.</p>
+            </div>
+
         </div>
         <div class="col-lg-4">
           <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
             <div class="features-icons-icon d-flex">
-              <i class="icon-layers m-auto text-primary"></i>
+              <i class="icon-search-plus m-auto text-primary"></i>
             </div>
-            <h3>Sign in/Sign up</h3>
-            <p class="lead mb-0">Featuring the latest build of the new Bootstrap 4 framework!</p>
+            <h3><a href="./search.php">Search Restaurant</a></h3>
+            <p class="lead mb-0">Search your favorite restaurant and order your favorite dish.</p>
           </div>
         </div>
         <div class="col-lg-4">
           <div class="features-icons-item mx-auto mb-0 mb-lg-3">
             <div class="features-icons-icon d-flex">
-              <i class="icon-check m-auto text-primary"></i>
+              <i class="icon-shopping-bag m-auto text-primary"></i>
             </div>
-            <h3>View Order</h3>
-            <p class="lead mb-0">Ready to use with your own content, or customize the source files!</p>
+            <h3><a href="./tracking.php">View Your Order</a></h3>
+            <p class="lead mb-0">View your current order and estimate delivery time.</p>
           </div>
         </div>
       </div>
       
     
-      <h3>Top restaurants</h3>
-        <div class="row">
-              <?php foreach ($all_restaurants as $restaurant):
+      <h3 style = "padding-top:40px">Top restaurants</h3>
+        <div class="row" >
+              <?php foreach ($rank_restaurants as $restaurant):
               $id = $restaurant['restaurantID'];
               $name = $restaurant['restaurant_name'];
               ?>
