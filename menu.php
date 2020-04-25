@@ -35,7 +35,7 @@ if (!empty($_POST["add"])) {
 
 if (!empty($_POST["remove"])) {
   if (empty($_SESSION['user'])) {
-    $msg = 'Log in first!';
+    echo "<script>alert('Log in First!');</script>";
   } else if (!empty($_POST["foodItemID"])) {
     removeFoodFromCart($userID, $id, $_POST["foodItemID"]);
     $shoppingCart = getCart($userID, $id);
