@@ -47,8 +47,8 @@ if (!empty($_POST["remove"])) {
 
 <!DOCTYPE html>
 <html lang="en">
-
     <?php include "./src/header.html" ?>
+
     <!-- END nav -->
 
     <!-- restaurant info -->
@@ -263,6 +263,7 @@ if (!empty($_POST["remove"])) {
                 <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
                 <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
                 <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+
               </ul>
             </div>
           </div>
@@ -318,9 +319,6 @@ if (!empty($_POST["remove"])) {
         </div>
       </div>
     </footer>
-
-
-
 
 
 
