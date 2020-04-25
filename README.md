@@ -1,6 +1,6 @@
 # CS4760-Food
 
-### GCP database connection 
+## GCP database connection 
 
 To connect to a cloud SQL, you need to configure access to your cloud instance. For more information on configuration, please refer to [configure-instance-mysql](https://cloud.google.com/sql/docs/mysql/connect-admin-ip#configure-instance-mysql).
 
