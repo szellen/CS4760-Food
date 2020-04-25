@@ -10,6 +10,7 @@ $restaurant = getRestaurantById($id);
 
 if (!empty($_SESSION['user'])) {
   $userID = getUserIDbyUsername($_SESSION['user'])[0];
+  echo $_SESSION['user'];
   $shoppingCart = getCart($userID, $id);
 } else {
   $shoppingCart = array();
