@@ -133,7 +133,16 @@ function getCart($userID, $res_id) {
 	return $results;
 }
 
-
-
+function getRankRestaurants() {
+  global $db;
+  $query = "SELECT * FROM restaurant_info NATURAL JOIN restaurant_address
+    NATURAL JOIN restaurant_contact
+    ORDER BY average_rating DESC";
+  $statement = $db->prepare($query);
+  $statement->execute();
+  $results = $statement->fetchAll();
+  $statement->closeCursor();
+  return $results;
+}
 
 ?>

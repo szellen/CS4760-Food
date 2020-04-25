@@ -5,7 +5,7 @@ require("food_db.php");
 
 $msg = '';
 
-$all_restaurants = getAllRestaurants();
+$rank_restaurants = getRankRestaurants();
 
 
 
@@ -94,7 +94,7 @@ $all_restaurants = getAllRestaurants();
     
       <h3>Top restaurants</h3>
         <div class="row">
-              <?php foreach ($all_restaurants as $restaurant):
+              <?php foreach ($rank_restaurants as $restaurant):
               $id = $restaurant['restaurantID'];
               $name = $restaurant['restaurant_name'];
               ?>

@@ -274,7 +274,7 @@ function updatepassword()
     <input type="email" name = "email" id="email" class="form-control" value = <?php echo $eresults['email']; ?> autofocus required />
 
     <label>Address: <?php echo $aresults['address']; ?></label> <div id="address-msg" class="feedback"></div> 
-    <input type="text" name = "address" id="address" class="form-control" value = <?php echo $aresults['address']; ?> autofocus required />
+    <input type="text-area" name = "address" id="address" class="form-control" value = <?php echo $aresults['address']; ?> autofocus required />
 
     <label>Phone Number: </label> <div id="pn-msg" class="feedback"></div> 
     <input type="text" name = "phone" id="phone" pattern="[0-9]{10}" class="form-control" value = <?php echo $presults['user_phone_number']; ?> autofocus required />
