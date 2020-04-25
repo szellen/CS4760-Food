@@ -19,10 +19,10 @@
 /******************************/
 // connecting to DB on XAMPP (local)
 
-$username = 'root';
-$password = 'database4750';
-$host = '35.221.14.178';
-$dbname = 'food';
+$username = 'nargis';
+$password = '$uP3rn@+ur@';
+$host = 'localhost:3306';
+$dbname = 'nargis';
 
 
 /******************************/
