@@ -207,32 +207,22 @@ if (!empty($_POST["submit_order"])) {
                   <?php foreach ($shoppingCart as $food): ?>
   						      <tr class="text-center">
                       <td>
-                        <form action="order.php" method="post">
-                          <input type="hidden" name="foodItemID" value="<?php echo $food['itemID'] ?>" />
-                          <input type="button" name="remove" value = "remove" class="btn btn-primary" />
+                      <form action="" method="post">
+                        <input type="hidden" name="foodItemID" value="<?php echo $food['itemID'] ?>" />
+                        <input type="submit" name="remove" value = "remove" class="btn btn-primary" />
+                      </form>
                       </td>
-
-                      <td class="product-name">
+  						        <td class="product-name">
   						        	<h3><?php echo $food["food_name"]?></h3>
-                        <input type="hidden" name="foodOrder[]" id="foodOrder" value="<?php echo $food['food_name']?>"/>
   						        </td>
-
-                      <td class="price">
-                        <?php echo $food["price"]?>
-                        <input type="hidden" name="foodPrice[]" id="foodPrice" value="<?php echo $food['price']?>"/>
-                      </td>
-
-                      <td class="quantity">
-                        1
-                        <input type="hidden" name="foodQuantity[]" id="foodQuantity" value="1"/>
-                      </td>
-
+  						        <td class="price"><?php echo $food["price"]?></td>
+  					          </td>
+                      <td class="quantity">1</td>
+  					          </td>
   						      </tr><!-- END TR-->
-
                   <?php endforeach; ?>
 						    </tbody>
 						  </table>
-
               <form action="order.php" method="post">
                 <input style="float: right;" type="submit" name="submit_order" value = "Submit Order" class="btn btn-primary" />
                 <input type="hidden" name="res_id" value="<?php echo $id ?>" />
@@ -362,5 +352,6 @@ if (!empty($_POST["submit_order"])) {
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
   <script src="menu_template/js/google-map.js"></script>
   <script src="menu_template/js/main.js"></script>
+
   </body>
 </html>
