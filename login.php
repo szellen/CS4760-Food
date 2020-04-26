@@ -56,7 +56,7 @@ function checkpassword()
       echo "<p> Error: Incorrect Username and/or Password </p>";
     } else {
       $statement->closeCursor();
-      header('Location: index.php');
+      header('Location: home.php');
     }
   } else {
     echo "Invalid Password";
@@ -159,9 +159,9 @@ function checkpassword()
     <div class="col-md-6 order-md-last d-flex">
   <form id="fm-login" action="login.php" method="POST" class="bg-white p-5 contact-form" >
     <h1 style="text-align:center">Login</h1>
-    <label>Username: </label> <div id="user-msg" class="feedback"></div> 
+    <label>Username: </label> <div id="user-msg" class="feedback"></div>
     <input type="text" name = "username" id="username" placeholder = "Enter Username" class="form-control" autofocus required />
-    <label>Password: </label> <div id="pwd-msg" class="feedback"></div> 
+    <label>Password: </label> <div id="pwd-msg" class="feedback"></div>
     <input type="password" name = "pwd" id="pwd" placeholder = "Enter Password" class="form-control" required />
     <div>
       <!-- the buttons -->
@@ -181,7 +181,7 @@ function checkpassword()
   //validate username input by checking length
       function validUsername() {
       var u_msg = document.getElementById("user-msg");
-      if (this.value.length < 8 && this.value.length > 0) {    	  
+      if (this.value.length < 8 && this.value.length > 0) {
         u_msg.textContent = "Longer Username is Required.";
       }
       else {
@@ -192,7 +192,7 @@ function checkpassword()
   //function to also checks if it meets the numeric and character reqs
     function validPassword() {
       var p_msg = document.getElementById("pwd-msg");
-      if (this.value.length < 8 && this.value.length > 0) {    	  
+      if (this.value.length < 8 && this.value.length > 0) {
          p_msg.textContent = "Longer Password is Required.";
       }
       else if (this.value.search(/\d/)==-1 && this.value.length > 0) {
