@@ -31,12 +31,27 @@ function getUserInfo($user) {
   return $result;
 }
 
+function insertOrder($order_number, $tracking_info, $date, $total, $tip) {
+  global $db;
+  $query = "INSERT INFO food_order VALUES (:order_number, :tracking_info, :date, :total, :tip)";
+  $statement = $db->prepare($query);
+  $statement->bindValue(':order_number', $orderNumber);
+  $statement->bindValue(':tracking_info', $trackingInfo);
+  $statement->bindValue(':date', $orderTime);
+  $statement->bindValue(':total', $total);
+  $statement->bindValue(':tip', $tip);
+  $statement->execute();
+  $statement->closecursor();
+}
+
 $userInfo = getUserInfo($_SESSION['user']);
 
 
 $foodName = $_POST['foodOrder'];
 $foodQuantity = $_POST['foodQuantity'];
 $foodPrice = $_POST['foodPrice'];
+
+$totalPrice = 0;
 
 ?>
 
@@ -78,6 +93,29 @@ $foodPrice = $_POST['foodPrice'];
           document.getElementById('YesShipDifferent').style.maxHeight= 0;
         }
       }
+
+      function updateTotal() {
+        num1 = document.getElementById("quantity").value; console.log(num1);
+        num2 = Number(document.getElementById("price").value); console.log(num2);
+        document.getElementById("total").innerText = (num1 * num2).toFixed(2);
+      }
+
+      function deleteItem(element) {
+        var table = document.getElementById('cart');
+        var x = element.parentElement;
+        x = x.parentElement;
+        x.remove();
+
+      }
+
+      function getTotal() {
+        $subotal = document.getElementById("finalPrice").value;
+        $tax = document.getElementById("finalTax").value;
+        $tip = document.getElementById("finalTip").value;
+        document.getElementById("finalTotal").value = $subtotal + $tax + $tip;
+      }
+
+
     </script>
 
   </head>
@@ -116,15 +154,15 @@ $foodPrice = $_POST['foodPrice'];
 				<div class="row">
     			<div class="col-md-12 ftco-animate">
     				<div class="cart-list">
-	    				<table class="table">
+	    				<table class="table" id="cart">
 						    <thead class="thead-primary">
 						      <tr class="text-center">
-						        <th>&nbsp;</th>
+						        <!-- <th>&nbsp;</th> -->
 
 						        <th>Product name</th>
 						        <th>Price</th>
-						        <th>Quantity</th>
-						        <th>Total</th>
+						        <!-- <th>Quantity</th> -->
+						        <!-- <th>Total</th> -->
 
 						      </tr>
 						    </thead>
@@ -133,23 +171,26 @@ $foodPrice = $_POST['foodPrice'];
                 <form>
                   <?php for($item=0; $item < count($_POST['foodOrder']); $item++) { ?>
 
-						      <tr class="text-center">
-						        <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
+						      <!-- <tr class="text-center">
+						        <td class="product-remove" ><a href="#" onclick="deleteItem(this)"><span class="ion-ios-close"></span></a></td> -->
 
 						        <td class="product-name">
 						        	<h3><?php echo $foodName[$item]; ?></h3>
 						        </td>
 
 						        <td class="price">$<?php echo $foodPrice[$item]; ?></td>
+                    <input type="hidden" id="price" value="<?php echo $foodPrice[$item]; ?>"/>
 
-						        <td class="quantity">
+                    <!-- <td class="quantity">
 						        	<div class="input-group mb-3">
-					             	<input type="text" name="quantity" class="quantity form-control input-number" value="<?php echo $foodQuantity[$item] ?>" min="1" max="100">
+					             	<input type="number" onclick="updateTotal()" id="quantity" name="quantity" class="quantity form-control input-number" value="<?php echo $foodQuantity[$item]?>" min="1" max="100">
 					          	</div>
-					          </td>
+					          </td> -->
 
-						        <td class="total">$<?php echo $foodQuantity[$item]*$foodPrice[$item]; ?></td>
+						        <!-- <td class="total" id="total">$<?php echo number_format($foodQuantity[$item]*$foodPrice[$item], 2); ?></td> -->
 						      </tr><!-- END TR-->
+
+                <?php $totalPrice += $foodPrice[$item];?>
                 <?php } ?>
                 </form>
 
@@ -324,28 +365,37 @@ $foodPrice = $_POST['foodPrice'];
 
 
       					</div>
+
+
       					<div class="col-xl-5">
       	          <div class="row mt-5 pt-3">
       	          	<div class="col-md-12 d-flex mb-5">
       	          		<div class="cart-detail cart-total p-3 p-md-4">
       	          			<h3 class="billing-heading mb-4">Cart Total</h3>
-      	          			<p class="d-flex">
+
+                        <form method="post" action="insertOrder()">
+                        <p class="d-flex">
       		    						<span>Subtotal</span>
-      		    						<span>$20.60</span>
+      		    						<span>$<?php echo number_format($totalPrice, 2); ?></span>
+                          <input type="hidden" name="finalPrice" id="finalPrice" value="<?php echo number_format($totalPrice, 2); ?>" />
+      		    					</p>
+
+      		    					<p class="d-flex">
+      		    						<span>Tax</span>
+      		    						<span>$<?php echo number_format($totalPrice *0.053, 2); ?></span>
+                          <input type="hidden" name="finalTax" id="finalTax" value="<?php echo number_format($totalPrice *0.053, 2); ?>" />
       		    					</p>
       		    					<p class="d-flex">
-      		    						<span>Delivery</span>
-      		    						<span>$0.00</span>
-      		    					</p>
-      		    					<p class="d-flex">
-      		    						<span>Discount</span>
-      		    						<span>$3.00</span>
+      		    						<span>Tip</span>
+      		    						<!-- <span>$<?php echo number_format($totalPrice * 0.1, 2); ?></span> -->
+                          $<input type="text" name="finalTip" id="finalTip" value="<?php echo number_format($totalPrice * 0.1, 2); ?>" size="4" />
       		    					</p>
       		    					<hr>
       		    					<p class="d-flex total-price">
       		    						<span>Total</span>
-      		    						<span>$17.60</span>
+      		    						<span>$<script>document.write(getTotal());</script></span>
       		    					</p>
+                      </form>
       								</div>
       	          	</div>
       	          	<div class="col-md-12">
