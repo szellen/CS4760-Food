@@ -1,15 +1,25 @@
 <?php
 require("connectdb.php");
 require("food_db.php");
-
+session_start();
 $msg = '';
+
+if (!empty($_SESSION['user'])) {
+  $userID = getUserIDbyUsername($_SESSION['user'])[0];
+  if (ifResOwner($userID) == 0) {
+    echo "<script>alert('Need to register as a restaurant owner!');</script>";
+  }
+}
+
+
 
 if (!empty($_POST['db-btn'])) {
   if ($_POST['db-btn'] == "Submit Restaurant Info") {
-    if (!empty($_POST["res_name"]) && !empty($_POST["address"]) && !empty($_POST["phone"]) && !empty($_POST["cuisine"]) && !empty($_POST["hours"]) ){
-      insert_restaurant($_POST["res_name"], $_POST["address"], $_POST["phone"], $_POST["cuisine"], $_POST["hours"]);
+    if (!empty($_POST["res_name"]) && !empty($_POST["address"]) && !empty($_POST["phone"]) && !empty($_POST["cuisine"]) && !empty($_POST["hours"]) && !empty($_SESSION['user'])){
+      insert_restaurant($_POST["res_name"], $_POST["address"], $_POST["phone"], $_POST["cuisine"], $_POST["hours"], $userID);
+      echo "<script>alert('Success!');</script>";
     } else {
-      $msg = "Info not complete!";
+      echo "<script>alert('Info not complete!');</script>";
     }
   }
 }
