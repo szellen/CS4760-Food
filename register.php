@@ -2,7 +2,6 @@
 require('connectdb.php');
 ?>
 <?php
-
 if (isset($_POST['btn-submit']))
 {
    try
@@ -59,11 +58,12 @@ function insertbasicinfo()
   require('connectdb.php');
   $username = $_POST['username'];
   $pwd = $_POST['pwd'];
+  $hash_pwd = password_hash($pwd, PASSWORD_DEFAULT);
   $email = $_POST['email'];
   $query = "INSERT INTO users (username, pwd, email) VALUES (:username, :pwd, :email)";
   $statement = $db->prepare($query);
   $statement->bindValue(':username', $username);
-  $statement->bindValue(':pwd', $pwd);
+  $statement->bindValue(':pwd', $hash_pwd);
   $statement->bindValue(':email', $email);
   $statement->execute();
   $statement->closeCursor();
