@@ -35,22 +35,33 @@ function checkpassword()
   require('connectdb.php');
   $username = $_POST['username'];
   $pwd = $_POST['pwd'];
-  $query = "SELECT username FROM users WHERE username = :un AND pwd = :pwd";
+  $query = "SELECT pwd FROM users WHERE username = :un";
   $statement = $db->prepare($query);
   $statement->bindValue(':un', $username);
-  $statement->bindValue(':pwd', $pwd);
   $statement->execute();
-  $count = 0;
-  while($result = $statement->fetch()){
-    $count++;
-    }
-  if ($count!=1)
+  $presults = $statement->fetch();
+  if (password_verify($pwd, $presults['pwd']))
   {
-    echo "<p> Error: Incorrect Username and/or Password </p>";
+    $query2 = "SELECT username FROM users WHERE username = :un AND pwd = :pwd";
+    $statement = $db->prepare($query2);
+    $statement->bindValue(':un', $username);
+    $statement->bindValue(':pwd', $presults['pwd']);
+    $statement->execute();
+    $count = 0;
+    while($result = $statement->fetch()){
+      $count++;
+      }
+    if ($count!=1)
+    {
+      echo "<p> Error: Incorrect Username and/or Password </p>";
+    } else {
+      $statement->closeCursor();
+      header('Location: index.php');
+    }
   } else {
-    $statement->closeCursor();
-    header('Location: index.php');
+    echo "Invalid Password";
   }
+
 }
 ?>
 
