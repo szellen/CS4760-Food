@@ -35,22 +35,33 @@ function checkpassword()
   require('connectdb.php');
   $username = $_POST['username'];
   $pwd = $_POST['pwd'];
-  $query = "SELECT username FROM users WHERE username = :un AND pwd = :pwd";
+  $query = "SELECT pwd FROM users WHERE username = :un";
   $statement = $db->prepare($query);
   $statement->bindValue(':un', $username);
-  $statement->bindValue(':pwd', $pwd);
   $statement->execute();
-  $count = 0;
-  while($result = $statement->fetch()){
-    $count++;
-    }
-  if ($count!=1)
+  $presults = $statement->fetch();
+  if (password_verify($pwd, $presults['pwd']))
   {
-    echo "<p> Error: Incorrect Username and/or Password </p>";
+    $query2 = "SELECT username FROM users WHERE username = :un AND pwd = :pwd";
+    $statement = $db->prepare($query2);
+    $statement->bindValue(':un', $username);
+    $statement->bindValue(':pwd', $presults['pwd']);
+    $statement->execute();
+    $count = 0;
+    while($result = $statement->fetch()){
+      $count++;
+      }
+    if ($count!=1)
+    {
+      echo "<p> Error: Incorrect Username and/or Password </p>";
+    } else {
+      $statement->closeCursor();
+      header('Location: home.php');
+    }
   } else {
-    $statement->closeCursor();
-    header('Location: index.php');
+    echo "Invalid Password";
   }
+
 }
 ?>
 
@@ -148,9 +159,9 @@ function checkpassword()
     <div class="col-md-6 order-md-last d-flex">
   <form id="fm-login" action="login.php" method="POST" class="bg-white p-5 contact-form" >
     <h1 style="text-align:center">Login</h1>
-    <label>Username: </label> <div id="user-msg" class="feedback"></div> 
+    <label>Username: </label> <div id="user-msg" class="feedback"></div>
     <input type="text" name = "username" id="username" placeholder = "Enter Username" class="form-control" autofocus required />
-    <label>Password: </label> <div id="pwd-msg" class="feedback"></div> 
+    <label>Password: </label> <div id="pwd-msg" class="feedback"></div>
     <input type="password" name = "pwd" id="pwd" placeholder = "Enter Password" class="form-control" required />
     <div>
       <!-- the buttons -->
@@ -170,7 +181,7 @@ function checkpassword()
   //validate username input by checking length
       function validUsername() {
       var u_msg = document.getElementById("user-msg");
-      if (this.value.length < 8 && this.value.length > 0) {    	  
+      if (this.value.length < 8 && this.value.length > 0) {
         u_msg.textContent = "Longer Username is Required.";
       }
       else {
@@ -181,7 +192,7 @@ function checkpassword()
   //function to also checks if it meets the numeric and character reqs
     function validPassword() {
       var p_msg = document.getElementById("pwd-msg");
-      if (this.value.length < 8 && this.value.length > 0) {    	  
+      if (this.value.length < 8 && this.value.length > 0) {
          p_msg.textContent = "Longer Password is Required.";
       }
       else if (this.value.search(/\d/)==-1 && this.value.length > 0) {

@@ -45,7 +45,7 @@ function getAllCuisines() {
 	return $results;
 }
 
-function insert_restaurant($res_name, $address, $phone, $cuisine, $hours) {
+function insert_restaurant($res_name, $address, $phone, $cuisine, $hours, $userID) {
   global $db;
   $query = "INSERT INTO restaurant_address(restaurant_address)
             VALUES (:restaurant_address)";
@@ -69,6 +69,24 @@ function insert_restaurant($res_name, $address, $phone, $cuisine, $hours) {
   $statement = $db->prepare($query);
   $statement->bindValue (':restaurant_name', $res_name);
   $statement->bindValue (':res_phone_number', $phone);
+  $statement->execute();
+  $statement->closecursor();
+
+  $query = "SELECT restaurantID FROM restaurant_address
+            WHERE restaurant_address = :address";
+  $statement = $db->prepare($query);
+  $statement->bindValue (':address', $address);
+  $statement->execute();
+  $result = $statement->fetch();
+  $statement->closecursor();
+  $res_id = $result[0];
+
+  $query = "UPDATE restaurant_owner
+            SET restaurant_id = :res_id
+            WHERE userID = :userID";
+  $statement = $db->prepare($query);
+  $statement->bindValue (':res_id', $res_id);
+  $statement->bindValue (':userID', $userID);
   $statement->execute();
   $statement->closecursor();
 }
@@ -133,7 +151,60 @@ function getCart($userID, $res_id) {
 	return $results;
 }
 
+function getRankRestaurants() {
+  // Return top 6 restaurants, ordered by average rating
+  global $db;
+  $query = "SELECT * FROM restaurant_info NATURAL JOIN restaurant_address
+    NATURAL JOIN restaurant_contact
+    ORDER BY average_rating DESC
+    limit 6";
+  $statement = $db->prepare($query);
+  $statement->execute();
+  $results = $statement->fetchAll();
+  $statement->closeCursor();
+  return $results;
+}
 
 
+function getOrders($username) {
+  global $db;
+  $query = "SELECT * FROM places natural join users
+            WHERE username = :username ";
+  $statement = $db->prepare($query);
+  $statement->bindValue (':username', $username);
+  $statement->execute();
+  $results = $statement->fetchAll();
+  $statement->closeCursor();
+  return $results;
+}
+
+
+function getOrdersDetails($order_number) {
+  global $db;
+  $query = "SELECT * FROM food_order
+            WHERE order_number = :order_number ";
+  $statement = $db->prepare($query);
+  $statement->bindValue (':order_number', $order_number);
+  $statement->execute();
+  $results = $statement->fetchAll();
+  $statement->closeCursor();
+  return $results;
+}
+
+function ifResOwner($userID) {
+  global $db;
+  $query = "SELECT count(*) FROM restaurant_owner
+            WHERE userID = :userID ";
+  $statement = $db->prepare($query);
+  $statement->bindValue (':userID', $userID);
+  $statement->execute();
+  $result = $statement->fetch();
+  $statement->closeCursor();
+  if ($result[0] == 0) {
+    return 0;
+  } else {
+    return 1;
+  }
+}
 
 ?>

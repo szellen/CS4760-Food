@@ -2,21 +2,14 @@
 <?php
 require("connectdb.php");
 require("food_db.php");
-
+session_start();
 $msg = '';
 
-$all_restaurants = getAllRestaurants();
-
-
+echo $_SESSION['user'];
+$username =$_SESSION['user'];
+$all_orders = getOrders($username);
 
 ?>
-
-
-
-
-
-
-
 
 
 
@@ -27,7 +20,7 @@ $all_restaurants = getAllRestaurants();
 <?php include "./src/header.html" ?>
 
   <!-- Page Content -->
-  <div class="container">
+  <div class="container", style = "padding: 50px">
 
     <div class="row">
 
@@ -35,26 +28,39 @@ $all_restaurants = getAllRestaurants();
 
 
     
-      <h3>Your order status</h3>
-      <p class="lead mb-0">order_number:</p>
-      <p class="lead mb-0">Total:</p>
-      <p class="lead mb-0">tracking information:</p>
-      <p class="lead mb-0">Estimate Arrival Time:</p>
 
-      <div id="googleMap" style="width:100%;height:400px;"></div>
 
-    <script>
-    function myMap() {
-    var mapProp= {
-    center:new google.maps.LatLng(51.508742,-0.120850),
-    zoom:5,
-    };
-    var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
-    }
-    </script>
+      <div class="row" >
+              <?php foreach ($all_orders as $order):
+                $order_number = $order['order_number'];
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&callback=myMap"></script>
 
+                $orderInfo = getOrdersDetails($order_number);
+              ?>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                  <div class="card h-100">
+
+                   
+                    <div class="card-body" >
+                      <h4 class="card-title">
+                      
+                      </h4>
+                      <h5>Order number: <?php echo $order_number;?></h5>
+                      <p class="lead mb-0">Total: <?php echo $orderInfo[0]['total'];?></p>
+                      <p class="lead mb-0">Tips: <?php echo $orderInfo[0]['tip'];?></p>
+                      <p class="lead mb-0">Date: <?php echo $orderInfo[0]['date'];?></p>
+                      <p class="lead mb-0">tracking: <?php echo $orderInfo[0]['tracking_info'];?></p>
+
+                    </div>
+
+
+                  </div>
+                </div>
+              <?php endforeach; ?>
+
+        </div>
+        <!-- end row -->
 
 
       </div>

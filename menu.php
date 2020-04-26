@@ -233,8 +233,8 @@ if (!empty($_POST["submit_order"])) {
 						    </tbody>
 						  </table>
 
+              <form action="order.php" method="post">
                 <input style="float: right;" type="submit" name="submit_order" value = "Submit Order" class="btn btn-primary" />
-
                 <input type="hidden" name="res_id" value="<?php echo $id ?>" />
                 <input type="hidden" name="userID" value="<?php echo $userID ?>" />
               </form>
