@@ -41,6 +41,14 @@ if (!empty($_POST["remove"])) {
   }
 }
 
+if (!empty($_POST["submit_order"])) {
+  if (empty($_SESSION['user'])) {
+    $msg = 'Log in first!';
+  } else if (!empty($_POST["foodItemID"])) {
+    removeFoodFromCart($userID, $id, $_POST["foodItemID"]);
+    $shoppingCart = getCart($userID, $id);
+  }
+}
 
 ?>
 
@@ -215,8 +223,10 @@ if (!empty($_POST["remove"])) {
                   <?php endforeach; ?>
 						    </tbody>
 						  </table>
-              <form action="" method="post">
+              <form action="order.php" method="post">
                 <input style="float: right;" type="submit" name="submit_order" value = "Submit Order" class="btn btn-primary" />
+                <input type="hidden" name="res_id" value="<?php echo $id ?>" />
+                <input type="hidden" name="userID" value="<?php echo $userID ?>" />
               </form>
 					  </div>
     			</div>
