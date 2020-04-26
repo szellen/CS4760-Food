@@ -10,7 +10,7 @@ if (isset($_GET['btn-save-changes']))
    {
       switch ($_GET['btn-save-changes'])
       {
-         case 'Save Changes': updateemail(); updateuserinfo(); updatepassword(); break;
+         case 'Save Changes': updateemail(); updateuserinfo(); break;
       }
    }
    catch (Exception $e)       // handle any type of exception
@@ -149,24 +149,7 @@ function updateuserinfo()
   $statement->execute();
   $statement->closeCursor();
 }
-function updatepassword()
-{
-  require('connectdb.php');
 
-  $query = "SELECT userID FROM users WHERE username = :un";
-  $statement = $db->prepare($query);
-  $statement->bindValue(':un', $_SESSION['user']);
-  $statement->execute();
-  $idresults = $statement->fetch();
-
-  $pwd = $_GET['pwd'];
-  $query2 = "UPDATE users SET pwd = :pwd WHERE userID = :userID";
-  $statement = $db->prepare($query2);
-  $statement->bindValue(':userID', $idresults['userID']);
-  $statement->bindValue(':pwd', $pwd);
-  $statement->execute();
-  $statement->closeCursor();
-}
 ?>
 
 
