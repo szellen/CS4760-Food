@@ -207,4 +207,17 @@ function ifResOwner($userID) {
   }
 }
 
+function getRestaurantByCuisine($cuisine) {
+  global $db;
+  $query = "SELECT * FROM restaurant_info NATURAL JOIN restaurant_address
+    NATURAL JOIN restaurant_contact
+    WHERE cuisine = :cuisine";
+  $statement = $db->prepare($query);
+  $statement->bindValue (':cuisine', $cuisine);
+  $statement->execute();
+  $results = $statement->fetchAll();
+  $statement->closecursor();
+  return $results;
+}
+
 ?>
