@@ -63,6 +63,22 @@ function getCreditCard($userID) {
 
 echo getCreditCard($userID);
 
+if(!empty($_POST['submit'])) {
+  addOrder($_POST['']);
+}
+
+function addOrder($order_number, $tracking_info, $date, $total, $tip) {
+  global $db;
+  $query = "INSERT INTO food_order VALUES (:order_number, NULL, :date, :total, :tip)";
+  $statement = $db->prepare($query);
+  $statement->bindValue(':order_number', $order_number);
+  $statement->bindValue(':date', $date);
+  $statement->bindValue(':total', $total);
+  $statement->bindValue(':tip', $tip);
+  $statement->execute();
+  $statement->closecursor();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -422,7 +438,7 @@ echo getCreditCard($userID);
       										</div>
       									</div>
                         <form action="" method="post">
-      									<p><a href="#"class="btn btn-primary py-3 px-4" name="placeOrder">Place an order</a></p>
+      									<p><a href="#"class="btn btn-primary py-3 px-4" name="submit">Place an order</a></p>
                         <input type="hidden" name="submitUserID" value="<?php echo $SESSION['user']?>" />
                         <input type="hidden" name="submitDate" value="<?php echo date('Y-m-d')?>" />
                         <input type="hidden" name="submitTotal" value="<?php echo $total?>" />
