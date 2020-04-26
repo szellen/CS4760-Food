@@ -33,6 +33,11 @@ function getUserInfo($user) {
 
 $userInfo = getUserInfo($_SESSION['user']);
 
+
+$foodName = $_POST['foodOrder'];
+$foodQuantity = $_POST['foodQuantity'];
+$foodPrice = $_POST['foodPrice'];
+
 ?>
 
 <!DOCTYPE html>
@@ -77,27 +82,7 @@ $userInfo = getUserInfo($_SESSION['user']);
 
   </head>
   <body class="goto-here">
-		<!-- <div class="py-1 bg-primary">
-    	<div class="container">
-    		<div class="row no-gutters d-flex align-items-start align-items-center px-md-0">
-	    		<div class="col-lg-12 d-block">
-		    		<div class="row d-flex">
-		    			<div class="col-md pr-4 d-flex topper align-items-center">
-					    	<div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-phone2"></span></div>
-						    <span class="text">+18045483722</span>
-					    </div>
-					    <div class="col-md pr-4 d-flex topper align-items-center">
-					    	<div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-paper-plane"></span></div>
-						    <span class="text">pm4by@virginia.edu</span>
-					    </div>
-					    <div class="col-md-5 pr-4 d-flex topper align-items-center text-lg-right">
-						    <span class="text">3-5 Business days delivery &amp; Free Returns</span>
-					    </div>
-				    </div>
-			    </div>
-		    </div>
-		  </div>
-    </div> -->
+
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 	    <div class="container">
 	      <a class="navbar-brand" href="index.html">Strictly Charlottesville</a>
@@ -111,16 +96,12 @@ $userInfo = getUserInfo($_SESSION['user']);
 	          <li class="nav-item active dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shop</a>
               <div class="dropdown-menu" aria-labelledby="dropdown04">
-              	<!-- <a class="dropdown-item" href="shop.html">Menu</a>
-              	<a class="dropdown-item" href="wishlist.html">Wishlist</a>
-                <a class="dropdown-item" href="product-single.html">Single Product</a> -->
+
                 <a class="dropdown-item" href="cart.html">Cart</a>
                 <a class="dropdown-item" href="checkout.html">Checkout</a>
               </div>
             </li>
-	          <!-- <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-	          <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
-	          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li> -->
+
 	          <li class="nav-item cta cta-colored"><a href="cart.html" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
 
 	        </ul>
@@ -129,16 +110,6 @@ $userInfo = getUserInfo($_SESSION['user']);
 	  </nav>
     <!-- END nav -->
 
-    <!-- <div class="hero-wrap hero-bread" style="background-image: url('menu_template/images/bg_1.jpg');">
-      <div class="container">
-        <div class="row no-gutters slider-text align-items-center justify-content-center">
-          <div class="col-md-9 ftco-animate text-center">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Cart</span></p>
-            <h1 class="mb-0 bread">My Cart</h1>
-          </div>
-        </div>
-      </div>
-    </div> -->
 
     <section class="ftco-section ftco-cart">
 			<div class="container">
@@ -160,75 +131,36 @@ $userInfo = getUserInfo($_SESSION['user']);
 						    <tbody>
 
                 <form>
-                  <?php foreach ($menu as $item): ?>
+                  <?php for($item=0; $item < count($_POST['foodOrder']); $item++) { ?>
+
 						      <tr class="text-center">
 						        <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
 
 						        <td class="product-name">
-						        	<h3><?php echo $item['food_name']; ?></h3>
-						        	<p><?php echo "restaurauntID: " . $item['restaurantID']; ?> </p>
+						        	<h3><?php echo $foodName[$item]; ?></h3>
 						        </td>
 
-						        <td class="price"><?php echo $item['price']; ?></td>
+						        <td class="price">$<?php echo $foodPrice[$item]; ?></td>
 
 						        <td class="quantity">
 						        	<div class="input-group mb-3">
-					             	<input type="text" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
+					             	<input type="text" name="quantity" class="quantity form-control input-number" value="<?php echo $foodQuantity[$item] ?>" min="1" max="100">
 					          	</div>
 					          </td>
 
-						        <td class="total"><?php echo $item['price']; ?></td>
+						        <td class="total">$<?php echo $foodQuantity[$item]*$foodPrice[$item]; ?></td>
 						      </tr><!-- END TR-->
-                  <? endforeach; ?>
+                <?php } ?>
                 </form>
 
-						      <!-- <tr class="text-center">
-						        <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
 
-						        <td class="product-name">
-						        	<h3>Bell Pepper</h3>
-						        	<p>Far far away, behind the word mountains, far from the countries</p>
-						        </td>
-
-						        <td class="price">$15.70</td>
-
-						        <td class="quantity">
-						        	<div class="input-group mb-3">
-					             	<input type="text" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
-					          	</div>
-					          </td>
-
-						        <td class="total">$15.70</td>
-						      </tr> END TR-->
 						    </tbody>
 						  </table>
 					  </div>
     			</div>
     		</div>
 
-    			<!-- <div class="col-lg-4 mt-5 cart-wrap ftco-animate">
-    				<div class="cart-total mb-3">
-    					<h3>Cart Totals</h3>
-    					<p class="d-flex">
-    						<span>Subtotal</span>
-    						<span>$20.60</span>
-    					</p>
-    					<p class="d-flex">
-    						<span>Delivery</span>
-    						<span>$0.00</span>
-    					</p>
-    					<p class="d-flex">
-    						<span>Discount</span>
-    						<span>$3.00</span>
-    					</p>
-    					<hr>
-    					<p class="d-flex total-price">
-    						<span>Total</span>
-    						<span>$17.60</span>
-    					</p>
-    				</div>
-    				<p><a href="checkout.html" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>
-    			</div> -->
+
 
           <!-- BILLING DETAILS -->
 
@@ -461,24 +393,6 @@ $userInfo = getUserInfo($_SESSION['user']);
 			</div>
 		</section>
 
-		<!-- <section class="ftco-section ftco-no-pt ftco-no-pb py-5 bg-light">
-      <div class="container py-4">
-        <div class="row d-flex justify-content-center py-5">
-          <div class="col-md-6">
-          	<h2 style="font-size: 22px;" class="mb-0">Subcribe to our Newsletter</h2>
-          	<span>Get e-mail updates about our latest shops and special offers</span>
-          </div>
-          <div class="col-md-6 d-flex align-items-center">
-            <form action="#" class="subscribe-form">
-              <div class="form-group d-flex">
-                <input type="text" class="form-control" placeholder="Enter email address">
-                <input type="submit" value="Subscribe" class="submit px-3">
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section> -->
     <footer class="ftco-footer ftco-section">
       <div class="container">
       	<div class="row">
@@ -511,31 +425,15 @@ $userInfo = getUserInfo($_SESSION['user']);
               </ul>
             </div>
           </div>
-          <!-- <div class="col-md-4">
-             <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2">Help</h2>
-              <div class="d-flex">
-	              <ul class="list-unstyled mr-l-5 pr-l-3 mr-4">
-	                <li><a href="#" class="py-2 d-block">Shipping Information</a></li>
-	                <li><a href="#" class="py-2 d-block">Returns &amp; Exchange</a></li>
-	                <li><a href="#" class="py-2 d-block">Terms &amp; Conditions</a></li>
-	                <li><a href="#" class="py-2 d-block">Privacy Policy</a></li>
-	              </ul>
-	              <ul class="list-unstyled">
-	                <li><a href="#" class="py-2 d-block">FAQs</a></li>
-	                <li><a href="#" class="py-2 d-block">Contact</a></li>
-	              </ul>
-	            </div>
-            </div>
-          </div> -->
+
           <div class="col-md">
             <div class="ftco-footer-widget mb-4">
             	<h2 class="ftco-heading-2">Have a Questions?</h2>
             	<div class="block-23 mb-3">
 	              <ul>
 	                <li><span class="icon icon-map-marker"></span><span class="text">85 Engineers Way, Charlottesville, Virginia, USA</span></li>
-	                <li><a href="#"><span class="icon icon-phone"></span><span class="text">+2 392 3929 210</span></a></li>
-	                <li><a href="#"><span class="icon icon-envelope"></span><span class="text">pm4by@virginia.edu</span></a></li>
+	                <li><a href="#"><span class="icon icon-phone"></span><span class="text">+1234 567 8910</span></a></li>
+	                <li><a href="#"><span class="icon icon-envelope"></span><span class="text">strictlycharlottesville@email.edu</span></a></li>
 	              </ul>
 	            </div>
             </div>
@@ -548,7 +446,7 @@ $userInfo = getUserInfo($_SESSION['user']);
 						  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
 						  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 						</p>
-            
+
           </div>
         </div>
       </div>
