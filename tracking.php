@@ -8,7 +8,7 @@ $msg = '';
 echo $_SESSION['user'];
 $username =$_SESSION['user'];
 $all_orders = getOrders($username);
-
+$orderCount = count($all_orders);
 ?>
 
 
@@ -31,6 +31,12 @@ $all_orders = getOrders($username);
 
 
       <div class="row" >
+
+              <?php 
+              if ($orderCount== 0)
+                echo 'You Have No Order Yet';
+              ?>
+
               <?php foreach ($all_orders as $order):
                 $order_number = $order['order_number'];
 

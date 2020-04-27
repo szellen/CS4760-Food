@@ -6,7 +6,21 @@ $msg = '';
 
 $all_restaurants = getAllRestaurants();
 $all_cuisines = getAllCuisines();
-echo $_SESSION['user']
+
+
+
+if (!empty($_POST["cuisine_filter"])) {
+  if ($_POST["cuisine_filter"] == "All" || $_POST["cuisine_filter"] == "Cuisine" ) {
+    $all_restaurants = getAllRestaurants();
+  } else {
+    $all_restaurants = getRestaurantByCuisine($_POST["cuisine_filter"]);
+    $result = $_POST["cuisine_filter"];
+    ?> <script>document.getElementById("cuisine_filter").value = "<?php $result ?>" </script>
+    <?php
+  }
+}
+
+
 ?>
 
 
@@ -19,7 +33,13 @@ echo $_SESSION['user']
 
   <body class="goto-here">
 
-  <?php include "./src/header.html" ?>
+  <?php 
+      if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+          include "./src/header.html" ;
+      } else {
+          include "./src/header_guest.html" ;
+}?>
+
 
 
     <div class="container">
@@ -84,14 +104,15 @@ echo $_SESSION['user']
                   <form action="search.php" method="post" style="width:100%; display:flex">
                     <div class="select-wrap">
                       <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                      <select name="" id="cuisine_filter" class="form-control">
-                        <option value="None" >Cuisine</option>
+                      <select name="cuisine_filter" id="cuisine_filter" class="form-control">
+                        <option value="Cuisine" >Cuisine</option>
+                        <option value="All" >All Cuisine</option>
                         <?php foreach ($all_cuisines as $cuisine): ?>
                           <option value="<?php echo $cuisine["cuisine"];?>"> <?php echo $cuisine["cuisine"];?></option>
                         <?php endforeach; ?>
                       </select>
                     </div>
-                    <button type="button" onclick="cuisineFilter()">Apply Filter</button>
+                    <button type="submit", name="apply_filter">Apply</button>
                   </form>
                 </div>
             </div>
