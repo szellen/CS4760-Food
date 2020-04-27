@@ -6,19 +6,11 @@ session_start();
 
 $user = $_SESSION['user'];
 
-$restaurantID = 1;
+$restaurant_ID = $_POST['res_id'];
+$userID = $_POST['userID'];
 
-function getAllFood($restaurantID) {
-  global $db;
-  $query = "SELECT * FROM food";
-  $statement = $db->prepare($query);
-  $statement->execute();
-  $result = $statement->fetchAll();
-  $statement->closecursor();
-  return $result;
-}
-
-$menu = getAllFood($restaurantID);
+echo $_POST['res_id'];
+echo $_POST['userID'];
 
 function getUserInfo($user) {
   global $db;
@@ -31,27 +23,68 @@ function getUserInfo($user) {
   return $result;
 }
 
-function insertOrder($order_number, $tracking_info, $date, $total, $tip) {
+function getOrder($userID, $restaurant_ID) {
   global $db;
-  $query = "INSERT INFO food_order VALUES (:order_number, :tracking_info, :date, :total, :tip)";
+  $query = "SELECT food_name FROM food_temp WHERE userID = :userID AND restaurantID = :restaurant_ID";
   $statement = $db->prepare($query);
-  $statement->bindValue(':order_number', $orderNumber);
-  $statement->bindValue(':tracking_info', $trackingInfo);
-  $statement->bindValue(':date', $orderTime);
+  $statement->bindValue(':userID', $userID);
+  $statement->bindValue(':restaurant_ID', $restaurant_ID);
+  $statement->execute();
+  $result = $statement->fetch();
+  $statement->closecursor();
+  return $result;
+}
+
+function getPrice($userID, $restaurant_ID) {
+  global $db;
+  $query = "SELECT price FROM food_temp WHERE userID = :userID AND restaurantID = :restaurant_ID";
+  $statement = $db->prepare($query);
+  $statement->bindValue(':userID', $userID);
+  $statement->bindValue(':restaurant_ID', $restaurant_ID);
+  $statement->execute();
+  $result = $statement->fetch();
+  $statement->closecursor();
+  return $result;
+}
+
+$fullOrder = getOrder($userID, $restaurant_ID);
+$fullPrice = getPrice($userID, $restaurant_ID);
+$userInfo = getUserInfo($_SESSION['user']);
+$subtotal = 0;
+$total = 0;
+
+function getCreditCard($userID) {
+  global $db;
+  $query = "SELECT credit_card FROM customers where userID = :userID";
+  $statement = $db->prepare($query);
+  $statement->bindValue(':userID', $userID);
+  $statement->execute();
+  $result = $statement->fetch();
+  $statement->closecursor();
+  return $result;
+}
+
+echo getCreditCard($userID);
+
+function addOrder($date, $total, $tip) {
+  global $db;
+  $query = "INSERT INTO food_order(date, total, tip)
+            VALUES (:date, :total, :tip)";
+  $statement = $db->prepare($query);
+  $statement->bindValue(':date', $date);
   $statement->bindValue(':total', $total);
   $statement->bindValue(':tip', $tip);
   $statement->execute();
   $statement->closecursor();
 }
 
-$userInfo = getUserInfo($_SESSION['user']);
+if(!empty($_POST['submitOrder'])) {
+  echo $_POST['submitDate'];
+  echo $_POST['submitTotal'];
+  echo $_POST['submitTip'];
+  addOrder($_POST['submitDate'], $_POST['submitTotal'], $_POST['submitTip']);
 
-
-$foodName = $_POST['foodOrder'];
-$foodQuantity = $_POST['foodQuantity'];
-$foodPrice = $_POST['foodPrice'];
-
-$totalPrice = 0;
+}
 
 ?>
 
@@ -94,31 +127,47 @@ $totalPrice = 0;
         }
       }
 
-      function updateTotal() {
-        num1 = document.getElementById("quantity").value; console.log(num1);
-        num2 = Number(document.getElementById("price").value); console.log(num2);
-        document.getElementById("total").innerText = (num1 * num2).toFixed(2);
+      function validCheckingAccount() {
+        if(document.getElementById('DirectBank').value == "") {
+          alert("Please validate your checking account");
+          document.getElementById('DirectBank').checked = false;
+        }
+        else {
+
+        }
       }
-
-      function deleteItem(element) {
-        var table = document.getElementById('cart');
-        var x = element.parentElement;
-        x = x.parentElement;
-        x.remove();
-
-      }
-
-      function getTotal() {
-        $subotal = document.getElementById("finalPrice").value;
-        $tax = document.getElementById("finalTax").value;
-        $tip = document.getElementById("finalTip").value;
-        document.getElementById("finalTotal").value = $subtotal + $tax + $tip;
-      }
-
-
     </script>
 
-<?php include "./src/header.html" ?>
+  </head>
+  <body class="goto-here">
+
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	    <div class="container">
+	      <a class="navbar-brand" href="index.html">Strictly Charlottesville</a>
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="oi oi-menu"></span> Menu
+	      </button>
+
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+	          <li class="nav-item"><a href="home.php" class="nav-link">View Restaurants</a></li>
+	          <li class="nav-item active dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shop</a>
+              <div class="dropdown-menu" aria-labelledby="dropdown04">
+
+                <a class="dropdown-item" href="order.php">Cart</a>
+                <!-- <a class="dropdown-item" href="checkout.html">Checkout</a> -->
+              </div>
+            </li>
+
+	          <li class="nav-item cta cta-colored"><a href="cart.html" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
+
+	        </ul>
+	      </div>
+	    </div>
+	  </nav>
+    <!-- END nav -->
+
 
     <section class="ftco-section ftco-cart">
 			<div class="container">
@@ -140,28 +189,26 @@ $totalPrice = 0;
 						    <tbody>
 
                 <form>
-                  <?php for($item=0; $item < count($_POST['foodOrder']); $item++) { ?>
-
-						      <!-- <tr class="text-center">
-						        <td class="product-remove" ><a href="#" onclick="deleteItem(this)"><span class="ion-ios-close"></span></a></td> -->
+                  <?php for($x=0; $x < count($fullOrder)-1; $x++) { ?>
+                  <tr class="text-center">
+						        <!-- <td class="product-remove" ><a href="#" onclick=""><span class="ion-ios-close"></span></a></td> -->
 
 						        <td class="product-name">
-						        	<h3><?php echo $foodName[$item]; ?></h3>
+						        	<h3><?php echo $fullOrder[$x]; ?></h3>
 						        </td>
 
-						        <td class="price">$<?php echo $foodPrice[$item]; ?></td>
-                    <input type="hidden" id="price" value="<?php echo $foodPrice[$item]; ?>"/>
+						        <td class="price">$<?php echo $fullPrice[$x]; ?></td>
+                    <input type="hidden" id="price" value=""/>
 
                     <!-- <td class="quantity">
 						        	<div class="input-group mb-3">
-					             	<input type="number" onclick="updateTotal()" id="quantity" name="quantity" class="quantity form-control input-number" value="<?php echo $foodQuantity[$item]?>" min="1" max="100">
+					             	<input type="number" onclick="updateTotal()" id="quantity" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100" size="4">
 					          	</div>
 					          </td> -->
 
-						        <!-- <td class="total" id="total">$<?php echo number_format($foodQuantity[$item]*$foodPrice[$item], 2); ?></td> -->
+						        <!-- <td class="total" id="total">$</td> -->
+                    <?php $subtotal += $fullPrice[$x]; ?>
 						      </tr><!-- END TR-->
-
-                <?php $totalPrice += $foodPrice[$item];?>
                 <?php } ?>
                 </form>
 
@@ -333,10 +380,7 @@ $totalPrice = 0;
       	          </form><!-- END -->
                 </div>
 
-
-
       					</div>
-
 
       					<div class="col-xl-5">
       	          <div class="row mt-5 pt-3">
@@ -347,24 +391,24 @@ $totalPrice = 0;
                         <form method="post" action="insertOrder()">
                         <p class="d-flex">
       		    						<span>Subtotal</span>
-      		    						<span>$<?php echo number_format($totalPrice, 2); ?></span>
-                          <input type="hidden" name="finalPrice" id="finalPrice" value="<?php echo number_format($totalPrice, 2); ?>" />
+      		    						<span>$<?php echo number_format($subtotal, 2); ?></span>
+                          <input type="hidden" name="finalPrice" id="finalPrice" value="<?php echo number_format($subtotal, 2); ?>" />
       		    					</p>
 
       		    					<p class="d-flex">
       		    						<span>Tax</span>
-      		    						<span>$<?php echo number_format($totalPrice *0.053, 2); ?></span>
-                          <input type="hidden" name="finalTax" id="finalTax" value="<?php echo number_format($totalPrice *0.053, 2); ?>" />
+      		    						<span>$<?php echo number_format($subtotal *0.053, 2); ?></span>
+                          <input type="hidden" name="finalTax" id="finalTax" value="<?php echo number_format($subtotal*0.053, 2); ?>" />
       		    					</p>
       		    					<p class="d-flex">
       		    						<span>Tip</span>
       		    						<!-- <span>$<?php echo number_format($totalPrice * 0.1, 2); ?></span> -->
-                          $<input type="text" name="finalTip" id="finalTip" value="<?php echo number_format($totalPrice * 0.1, 2); ?>" size="4" />
+                          $<input type="text" name="finalTip" id="finalTip" value="<?php echo number_format($subtotal* 0.1, 2); ?>" size="4" />
       		    					</p>
       		    					<hr>
       		    					<p class="d-flex total-price">
       		    						<span>Total</span>
-      		    						<span>$<script>document.write(getTotal());</script></span>
+      		    						<span>$<?php echo $total = number_format($subtotal, 2) +  number_format($subtotal *0.053, 2) + number_format($subtotal* 0.1, 2);?></span>
       		    					</p>
                       </form>
       								</div>
@@ -375,24 +419,24 @@ $totalPrice = 0;
       									<div class="form-group">
       										<div class="col-md-12">
       											<div class="radio">
-      											   <label><input type="radio" name="optradio" class="mr-2"> Direct Bank Tranfer</label>
-      											</div>
-      										</div>
-      									</div>
-      									<div class="form-group">
-      										<div class="col-md-12">
-      											<div class="radio">
-      											   <label><input type="radio" name="optradio" class="mr-2"> Check Payment</label>
+      											   <label><input type="radio" name="optradio" id="DirectBank" class="mr-2" value="<?php echo getCreditCard($userID); ?>" onclick="validCheckingAccount()"> Direct Bank Tranfer</label>
       											</div>
       										</div>
       									</div>
       									<!-- <div class="form-group">
       										<div class="col-md-12">
       											<div class="radio">
-      											   <label><input type="radio" name="optradio" class="mr-2"> Paypal</label>
+      											   <label><input type="radio" name="optradio" class="mr-2"> Check Payment</label>
       											</div>
       										</div>
       									</div> -->
+      									<div class="form-group">
+      										<div class="col-md-12">
+      											<div class="radio">
+      											   <label><input type="radio" name="optradio" class="mr-2"> Paypal</label>
+      											</div>
+      										</div>
+      									</div>
       									<div class="form-group">
       										<div class="col-md-12">
       											<div class="checkbox">
@@ -400,7 +444,16 @@ $totalPrice = 0;
       											</div>
       										</div>
       									</div>
-      									<p><a href="#"class="btn btn-primary py-3 px-4">Place an order</a></p>
+                        <form action="order.php" method="post">
+                        <p><input type="submit" name="submitOrder" value="submit" class="btn btn-primary"/></p>
+      									<!-- <p><a href="#"class="btn btn-primary py-3 px-4" name="submit">Place an order</a></p> -->
+                        <input type="hidden" name="submitUserID" value="<?php echo $SESSION['user']?>" />
+                        <input type="hidden" name="submitDate" value="<?php echo date("Y-m-d H:i:s")?>" />
+                        <input type="hidden" name="submitTotal" value="<?php echo $total?>" />
+                        <input type="hidden" name="submitTip" value="<?php echo number_format($subtotal*.1, 2)?>" />
+                        <input type="hidden" name="res_id" value="<?php echo $restaurant_ID ?>" />
+                        <input type="hidden" name="userID" value="<?php echo $userID ?>" />
+                      </form>
       								</div>
       	          	</div>
       	          </div>
@@ -414,7 +467,64 @@ $totalPrice = 0;
 			</div>
 		</section>
 
-		<?php include "./src/footer.html" ?>
+    <footer class="ftco-footer ftco-section">
+      <div class="container">
+      	<div class="row">
+      		<div class="mouse">
+						<a href="#" class="mouse-icon">
+							<div class="mouse-wheel"><span class="ion-ios-arrow-up"></span></div>
+						</a>
+					</div>
+      	</div>
+        <div class="row mb-5">
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Strictly Charlottesville</h2>
+              <p>Based in Charlottesville, Virginia.</p>
+              <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
+                <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-5">
+              <h2 class="ftco-heading-2">Menu</h2>
+              <ul class="list-unstyled">
+                <li><a href="#" class="py-2 d-block">View Restaurants</a></li>
+                <li><a href="#" class="py-2 d-block">Cart</a></li>
+                <li><a href="#" class="py-2 d-block">My Account</a></li>
+                <!-- <li><a href="#" class="py-2 d-block">Contact Us</a></li> -->
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+            	<h2 class="ftco-heading-2">Have a Questions?</h2>
+            	<div class="block-23 mb-3">
+	              <ul>
+	                <li><span class="icon icon-map-marker"></span><span class="text">85 Engineers Way, Charlottesville, Virginia, USA</span></li>
+	                <li><a href="#"><span class="icon icon-phone"></span><span class="text">+1234 567 8910</span></a></li>
+	                <li><a href="#"><span class="icon icon-envelope"></span><span class="text">strictlycharlottesville@email.edu</span></a></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-center">
+
+            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+						  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+						  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+						</p>
+
+          </div>
+        </div>
+      </div>
+    </footer>
 
 
 
