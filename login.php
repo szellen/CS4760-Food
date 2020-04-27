@@ -1,4 +1,4 @@
-<?php session_start();?>
+
 <?php
 require('connectdb.php');
 ?>
@@ -21,10 +21,14 @@ require('connectdb.php');
         }
         else
         {
+          session_start();
+          $_SESSION['loggedin'] = true;
+          $_SESSION['username'] = $username;
           $_SESSION['user'] = $user;
           $hash_pwd = password_hash($pwd, PASSWORD_BCRYPT);
           $_SESSION['pwd'] = $hash_pwd;
           checkpassword();
+
         }
       }
     }

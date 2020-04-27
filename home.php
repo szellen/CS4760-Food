@@ -8,7 +8,6 @@ $msg = '';
 $rank_restaurants = getRankRestaurants();
 
 session_start();
-
 ?>
 
 
@@ -24,10 +23,12 @@ session_start();
 <html lang="en">
 <body>
 
-
-
-<?php include "./src/header.html" ?>
-
+<?php 
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+    include "./src/header.html" ;
+} else {
+    include "./src/header_guest.html" ;
+}?>
 
 
   <!-- Page Content -->
@@ -74,9 +75,6 @@ session_start();
             </div>
             <h3><a href="./login.php">Sign in/Sign up</a></h3>
             <p class="lead mb-0">Sign in your account to start enjoy Strictly Charlottesville.</p>
-
-
-
             </div>
 
         </div>
@@ -157,3 +155,4 @@ session_start();
 </body>
 
 </html>
+
