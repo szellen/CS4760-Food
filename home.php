@@ -7,8 +7,7 @@ $msg = '';
 
 $rank_restaurants = getRankRestaurants();
 
-
-
+session_start();
 ?>
 
 
@@ -24,7 +23,13 @@ $rank_restaurants = getRankRestaurants();
 <html lang="en">
 <body>
 
-<?php include "./src/header.html" ?>
+<?php 
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+    include "./src/header.html" ;
+} else {
+    include "./src/header_guest.html" ;
+}?>
+
 
   <!-- Page Content -->
   <div class="container">
@@ -63,17 +68,31 @@ $rank_restaurants = getRankRestaurants();
 
       <div class="row" style = "padding-top:20px">
 
-        <div class="col-lg-4">
+        <div class="col-lg-6">
           <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
             <div class="features-icons-icon d-flex">
               <i class="icon-check m-auto text-primary"></i>
             </div>
-            <h3><a href="./login.php">Sign in/Sign up</a></h3>
-            <p class="lead mb-0">Sign in your account to start enjoy Strictly Charlottesville.</p>
+
+
+            <?php 
+
+              if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+                    echo '
+                    <h3><a href="./tracking.php">View Your Order</a></h3>
+                    <p class="lead mb-0">View your current order and estimate delivery time.</p>
+                    ';
+              } else {
+                  echo '<h3><a href="./login.php">Sign in/Sign up</a></h3>
+                <p class="lead mb-0">Sign in your account to start enjoy Strictly Charlottesville.</p>
+                
+                ';
+            }?>
+
             </div>
 
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-6">
           <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
             <div class="features-icons-icon d-flex">
               <i class="icon-search-plus m-auto text-primary"></i>
@@ -82,15 +101,7 @@ $rank_restaurants = getRankRestaurants();
             <p class="lead mb-0">Search your favorite restaurant and order your favorite dish.</p>
           </div>
         </div>
-        <div class="col-lg-4">
-          <div class="features-icons-item mx-auto mb-0 mb-lg-3">
-            <div class="features-icons-icon d-flex">
-              <i class="icon-shopping-bag m-auto text-primary"></i>
-            </div>
-            <h3><a href="./tracking.php">View Your Order</a></h3>
-            <p class="lead mb-0">View your current order and estimate delivery time.</p>
-          </div>
-        </div>
+       
       </div>
       
     
@@ -150,3 +161,4 @@ $rank_restaurants = getRankRestaurants();
 </body>
 
 </html>
+
