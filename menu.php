@@ -55,8 +55,12 @@ if (!empty($_POST["submit_order"])) {
 
 <!DOCTYPE html>
 <html lang="en">
-    <?php include "./src/header.html" ?>
-
+<?php 
+      if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+          include "./src/header.html" ;
+      } else {
+          include "./src/header_guest.html" ;
+}?>
     <!-- END nav -->
 
     <!-- restaurant info -->

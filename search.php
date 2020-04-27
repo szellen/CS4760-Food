@@ -33,7 +33,13 @@ if (!empty($_POST["cuisine_filter"])) {
 
   <body class="goto-here">
 
-  <?php include "./src/header.html" ?>
+  <?php 
+      if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+          include "./src/header.html" ;
+      } else {
+          include "./src/header_guest.html" ;
+}?>
+
 
 
     <div class="container">
