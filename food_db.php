@@ -209,9 +209,10 @@ function ifResOwner($userID) {
 
 function getRestaurantByCuisine($cuisine) {
   global $db;
-  $query = "SELECT * FROM restaurant_info NATURAL JOIN restaurant_address
-    NATURAL JOIN restaurant_contact
-    WHERE cuisine = :cuisine";
+  // $query = "SELECT * FROM restaurant_info NATURAL JOIN restaurant_address
+  //   NATURAL JOIN restaurant_contact
+  //   WHERE cuisine = :cuisine";
+  $query = "CALL procedure1(:cuisine)";
   $statement = $db->prepare($query);
   $statement->bindValue (':cuisine', $cuisine);
   $statement->execute();
