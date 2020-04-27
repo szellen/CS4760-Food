@@ -9,6 +9,9 @@ $user = $_SESSION['user'];
 $restaurant_ID = $_POST['res_id'];
 $userID = $_POST['userID'];
 
+echo $_POST['res_id'];
+echo $_POST['userID'];
+
 function getUserInfo($user) {
   global $db;
   $query = "SELECT * FROM user NATURAL JOIN users NATURAL JOIN user_phone_number WHERE username = :user";
@@ -63,20 +66,24 @@ function getCreditCard($userID) {
 
 echo getCreditCard($userID);
 
-if(!empty($_POST['submit'])) {
-  addOrder($_POST['']);
-}
-
-function addOrder($order_number, $tracking_info, $date, $total, $tip) {
+function addOrder($date, $total, $tip) {
   global $db;
-  $query = "INSERT INTO food_order VALUES (:order_number, NULL, :date, :total, :tip)";
+  $query = "INSERT INTO food_order(date, total, tip)
+            VALUES (:date, :total, :tip)";
   $statement = $db->prepare($query);
-  $statement->bindValue(':order_number', $order_number);
   $statement->bindValue(':date', $date);
   $statement->bindValue(':total', $total);
   $statement->bindValue(':tip', $tip);
   $statement->execute();
   $statement->closecursor();
+}
+
+if(!empty($_POST['submitOrder'])) {
+  echo $_POST['submitDate'];
+  echo $_POST['submitTotal'];
+  echo $_POST['submitTip'];
+  addOrder($_POST['submitDate'], $_POST['submitTotal'], $_POST['submitTip']);
+
 }
 
 ?>
@@ -437,12 +444,15 @@ function addOrder($order_number, $tracking_info, $date, $total, $tip) {
       											</div>
       										</div>
       									</div>
-                        <form action="" method="post">
-      									<p><a href="#"class="btn btn-primary py-3 px-4" name="submit">Place an order</a></p>
+                        <form action="order.php" method="post">
+                        <p><input type="submit" name="submitOrder" value="submit" class="btn btn-primary"/></p>
+      									<!-- <p><a href="#"class="btn btn-primary py-3 px-4" name="submit">Place an order</a></p> -->
                         <input type="hidden" name="submitUserID" value="<?php echo $SESSION['user']?>" />
-                        <input type="hidden" name="submitDate" value="<?php echo date('Y-m-d')?>" />
+                        <input type="hidden" name="submitDate" value="<?php echo date("Y-m-d H:i:s")?>" />
                         <input type="hidden" name="submitTotal" value="<?php echo $total?>" />
                         <input type="hidden" name="submitTip" value="<?php echo number_format($subtotal*.1, 2)?>" />
+                        <input type="hidden" name="res_id" value="<?php echo $restaurant_ID ?>" />
+                        <input type="hidden" name="userID" value="<?php echo $userID ?>" />
                       </form>
       								</div>
       	          	</div>
