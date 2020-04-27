@@ -57,7 +57,7 @@ function checkpassword()
       echo "<p> Error: Incorrect Username and/or Password </p>";
     } else {
       $statement->closeCursor();
-      header('Location: index.php');
+      header('Location: home.php');
     }
   } else {
     echo "Invalid Password";
