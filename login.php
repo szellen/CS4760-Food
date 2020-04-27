@@ -73,7 +73,7 @@ function checkpassword()
 
 <!DOCTYPE html>
 <html lang="en">
-<?php include "./src/header.html" ?>
+<?php include "./src/header_guest.html" ?>
 
 <section class="ftco-section contact-section bg-light">
 <div class="container">
