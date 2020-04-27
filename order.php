@@ -25,12 +25,12 @@ function getUserInfo($user) {
 
 function getOrder($userID, $restaurant_ID) {
   global $db;
-  $query = "SELECT food_name FROM food_temp WHERE userID = :userID AND restaurantID = :restaurant_ID";
+  $query = "SELECT food_name, price FROM food_temp WHERE userID = :userID AND restaurantID = :restaurant_ID";
   $statement = $db->prepare($query);
   $statement->bindValue(':userID', $userID);
   $statement->bindValue(':restaurant_ID', $restaurant_ID);
   $statement->execute();
-  $result = $statement->fetch();
+  $result = $statement->fetchAll();
   $statement->closecursor();
   return $result;
 }
@@ -42,12 +42,13 @@ function getPrice($userID, $restaurant_ID) {
   $statement->bindValue(':userID', $userID);
   $statement->bindValue(':restaurant_ID', $restaurant_ID);
   $statement->execute();
-  $result = $statement->fetch();
+  $result = $statement->fetchAll();
   $statement->closecursor();
   return $result;
 }
 
 $fullOrder = getOrder($userID, $restaurant_ID);
+print_r($fullOrder);
 $fullPrice = getPrice($userID, $restaurant_ID);
 $userInfo = getUserInfo($_SESSION['user']);
 $subtotal = 0;
@@ -66,7 +67,7 @@ function getCreditCard($userID) {
 
 echo getCreditCard($userID);
 
-function addOrder($date, $total, $tip) {
+function addOrder($date, $total, $tip, $userID) {
   global $db;
   $query = "INSERT INTO food_order(date, total, tip)
             VALUES (:date, :total, :tip)";
@@ -76,43 +77,51 @@ function addOrder($date, $total, $tip) {
   $statement->bindValue(':tip', $tip);
   $statement->execute();
   $statement->closecursor();
+
+
+  // $query1 = "SELECT max(order_number) FROM food_order";
+  // $statement = $db->prepare($query1);
+  // $result = $statement->fetch();
+  // $order_number = $result[0];
+  // echo $order_number;
+  // echo $result;
+  // var_dump($order_number);
+  // var_dump($result);
+  // $statement->execute();
+  // $statement->closecursor();
+
+  $query2 = "INSERT INTO places(userID)
+            VALUES (:userID)";
+  $statement = $db->prepare($query2);
+  $statement->bindValue(':userID', $userID);
+  $statement->execute();
+  $statement->closecursor();
+
+
 }
+
+
+
 
 if(!empty($_POST['submitOrder'])) {
   echo $_POST['submitDate'];
   echo $_POST['submitTotal'];
   echo $_POST['submitTip'];
-  addOrder($_POST['submitDate'], $_POST['submitTotal'], $_POST['submitTip']);
-
+  addOrder($_POST['submitDate'], $_POST['submitTotal'], $_POST['submitTip'], $userID);
+  header("Location: tracking.php");
 }
 
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Food App</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="menu_template/css/open-iconic-bootstrap.min.css">
-    <link rel="stylesheet" href="menu_template/css/animate.css">
-    <link rel="stylesheet" href="menu_template/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="menu_template/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="menu_template/css/magnific-popup.css">
-    <link rel="stylesheet" href="menu_template/css/aos.css">
-    <link rel="stylesheet" href="menu_template/css/ionicons.min.css">
-    <link rel="stylesheet" href="menu_template/css/bootstrap-datepicker.css">
-    <link rel="stylesheet" href="menu_template/css/jquery.timepicker.css">
-    <link rel="stylesheet" href="menu_template/css/flaticon.css">
-    <link rel="stylesheet" href="menu_template/css/icomoon.css">
-    <link rel="stylesheet" href="menu_template/css/style.css">
-    <link rel="stylesheet" href="order.css">
-
+<?php
+      if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+          include "./src/header.html" ;
+      } else {
+          include "./src/header_guest.html" ;
+}?>
     <script>
       function shipDifferentAddress() {
         if(document.getElementById('ShipDifferent').checked) {
@@ -138,36 +147,6 @@ if(!empty($_POST['submitOrder'])) {
       }
     </script>
 
-  </head>
-  <body class="goto-here">
-
-    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-	    <div class="container">
-	      <a class="navbar-brand" href="index.html">Strictly Charlottesville</a>
-	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-	        <span class="oi oi-menu"></span> Menu
-	      </button>
-
-	      <div class="collapse navbar-collapse" id="ftco-nav">
-	        <ul class="navbar-nav ml-auto">
-	          <li class="nav-item"><a href="home.php" class="nav-link">View Restaurants</a></li>
-	          <li class="nav-item active dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shop</a>
-              <div class="dropdown-menu" aria-labelledby="dropdown04">
-
-                <a class="dropdown-item" href="order.php">Cart</a>
-                <!-- <a class="dropdown-item" href="checkout.html">Checkout</a> -->
-              </div>
-            </li>
-
-	          <li class="nav-item cta cta-colored"><a href="cart.html" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
-
-	        </ul>
-	      </div>
-	    </div>
-	  </nav>
-    <!-- END nav -->
-
 
     <section class="ftco-section ftco-cart">
 			<div class="container">
@@ -189,15 +168,15 @@ if(!empty($_POST['submitOrder'])) {
 						    <tbody>
 
                 <form>
-                  <?php for($x=0; $x < count($fullOrder)-1; $x++) { ?>
+                  <?php  foreach ($fullOrder as $food): ?>
                   <tr class="text-center">
 						        <!-- <td class="product-remove" ><a href="#" onclick=""><span class="ion-ios-close"></span></a></td> -->
 
 						        <td class="product-name">
-						        	<h3><?php echo $fullOrder[$x]; ?></h3>
+						        	<h3><?php echo $food['food_name']; ?></h3>
 						        </td>
 
-						        <td class="price">$<?php echo $fullPrice[$x]; ?></td>
+						        <td class="price">$<?php echo $food["price"]; ?></td>
                     <input type="hidden" id="price" value=""/>
 
                     <!-- <td class="quantity">
@@ -207,9 +186,10 @@ if(!empty($_POST['submitOrder'])) {
 					          </td> -->
 
 						        <!-- <td class="total" id="total">$</td> -->
-                    <?php $subtotal += $fullPrice[$x]; ?>
+                    <?php $subtotal += $food["price"]; ?>
 						      </tr><!-- END TR-->
-                <?php } ?>
+                  <?php endforeach; ?>
+                
                 </form>
 
 
