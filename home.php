@@ -7,7 +7,7 @@ $msg = '';
 
 $rank_restaurants = getRankRestaurants();
 
-
+session_start();
 
 ?>
 
@@ -24,7 +24,11 @@ $rank_restaurants = getRankRestaurants();
 <html lang="en">
 <body>
 
+
+
 <?php include "./src/header.html" ?>
+
+
 
   <!-- Page Content -->
   <div class="container">
@@ -70,6 +74,9 @@ $rank_restaurants = getRankRestaurants();
             </div>
             <h3><a href="./login.php">Sign in/Sign up</a></h3>
             <p class="lead mb-0">Sign in your account to start enjoy Strictly Charlottesville.</p>
+
+
+
             </div>
 
         </div>
