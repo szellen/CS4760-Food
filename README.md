@@ -1,4 +1,5 @@
-# CS4760-Food
+# CS4750-Food： 
+## final project for CS4750 Databases offering in UVa Spring 2020
 
 ## GCP database connection 
 
